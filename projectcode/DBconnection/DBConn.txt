@@ -1,0 +1,5 @@
+db_name = "FoundationFood"  # Your database name
+db_user = "postgres"   # Your PostgreSQL username
+db_password = "superuser" # Your PostgreSQL password
+db_host = "localhost"       # Usually 'localhost' for local server
+db_port = "5432"            # Default PostgreSQL port

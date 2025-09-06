@@ -1,0 +1,44 @@
+import cv2
+from pathlib import Path
+from detectron2.utils.visualizer import Visualizer
+from detectron2.data import MetadataCatalog
+
+# --- paths ---
+INPUT_DIR  = Path("/app/mediaFiles/videos/AnnotateVideos/RawVideos/")
+OUTPUT_DIR = Path("/app/mediaFiles/videos/AnnotateVideos/RawVideos/PixelDifferentiation/stream_only/")
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# Metadata for labels (COCO classes for the chosen config)
+metadata = MetadataCatalog.get(cfg.DATASETS.TRAIN[0])
+
+# Process all images (including subfolders)
+valid_exts = {".jpg", ".jpeg", ".png"}
+img_paths = [p for p in INPUT_DIR.rglob("*") if p.suffix.lower() in valid_exts]
+
+if not img_paths:
+    print(f"No images found under: {INPUT_DIR}")
+else:
+    for img_path in img_paths:
+        im = cv2.imread(str(img_path))
+        if im is None:
+            print(f"Warning: could not read {img_path}; skipping.")
+            continue
+
+        # Inference
+        outputs = predictor(im)
+        instances_cpu = outputs["instances"].to("cpu")
+
+        # Visualize (draw boxes + class labels)
+        v = Visualizer(im[:, :, ::-1], metadata=metadata, scale=1.0)
+        vis = v.draw_instance_predictions(instances_cpu)
+
+        # Mirror input folder structure in the output
+        rel = img_path.relative_to(INPUT_DIR)
+        out_dir = (OUTPUT_DIR / rel).parent
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_path = out_dir / f"labeled_{rel.name}"
+
+        cv2.imwrite(str(out_path), vis.get_image()[:, :, ::-1])
+        print(f"✅ Saved: {out_path}")
+
+print("\n🎉 Finished labeling all images.")

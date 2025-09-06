@@ -1,0 +1,7 @@
+mediaFiles/
+dependencies/slowfast/
+dependencies/epic-kitchens/
+dependencies/
+yolo_results/
+projectcode/ModelCheckpointsAndLabels/
+labeledvideos/

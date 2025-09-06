@@ -1,0 +1,81 @@
+import os
+import shutil
+import random
+from pathlib import Path
+import yaml
+
+# --- Configuration ---
+source_dirs = {
+    'instant coffee':'/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/instantCoffee',
+    'milk gallon': '/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/milkGallon',
+    'milk pour': '/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/milkPourVideos'
+}
+
+output_dir = '/app/mediaFiles/images/YoloTrainingImages/yolotrainingImages/'  # folder to store YOLO dataset
+train_ratio = 0.8  # train/val split
+
+# --- Create YOLO structure ---
+images_train_dir = Path(output_dir) / 'images' / 'train'
+images_val_dir = Path(output_dir) / 'images' / 'val'
+labels_train_dir = Path(output_dir) / 'labels' / 'train'
+labels_val_dir = Path(output_dir) / 'labels' / 'val'
+
+for d in [images_train_dir, images_val_dir, labels_train_dir, labels_val_dir]:
+    d.mkdir(parents=True, exist_ok=True)
+
+# --- Process each class ---
+class_names = list(source_dirs.keys())
+class_id_map = {name: idx for idx, name in enumerate(class_names)}
+
+for class_name, class_path in source_dirs.items():
+    print(f'Processing class: {class_name}')
+    # Assume images are in a subfolder called "images", labels in "labels"
+    images_path = Path(class_path) / 'images'
+    labels_path = Path(class_path) / 'labels'
+    
+    all_images = [f for f in images_path.iterdir() if f.suffix.lower() in ['.jpg', '.jpeg', '.png']]
+    random.shuffle(all_images)
+    
+    split_idx = int(len(all_images) * train_ratio)
+    train_images = all_images[:split_idx]
+    val_images = all_images[split_idx:]
+    
+    for img_list, img_out_dir, lbl_out_dir in [
+        (train_images, images_train_dir, labels_train_dir),
+        (val_images, images_val_dir, labels_val_dir)
+    ]:
+        for img_file in img_list:
+            # Copy image
+            shutil.copy(img_file, img_out_dir / img_file.name)
+            
+            # Copy corresponding label
+            label_file = labels_path / (img_file.stem + '.txt')
+            if label_file.exists():
+                # Optional: update class_id if needed
+                with open(label_file, 'r') as f:
+                    lines = f.readlines()
+                new_lines = []
+                for line in lines:
+                    parts = line.strip().split()
+                    # replace class_id with class_id_map[class_name]
+                    parts[0] = str(class_id_map[class_name])
+                    new_lines.append(' '.join(parts))
+                with open(lbl_out_dir / label_file.name, 'w') as f:
+                    f.write('\n'.join(new_lines))
+            else:
+                print(f'Warning: Label not found for {img_file}')
+
+# --- Create data.yaml ---
+data_yaml = {
+    'train': str(images_train_dir.resolve()),
+    'val': str(images_val_dir.resolve()),
+    'nc': len(class_names),
+    'names': class_names
+}
+
+with open(Path(output_dir) / 'data.yaml', 'w') as f:
+    yaml.dump(data_yaml, f)
+
+print('YOLO dataset prepared successfully!')
+print(f'Train images: {len(list(images_train_dir.iterdir()))}')
+print(f'Val images: {len(list(images_val_dir.iterdir()))}')

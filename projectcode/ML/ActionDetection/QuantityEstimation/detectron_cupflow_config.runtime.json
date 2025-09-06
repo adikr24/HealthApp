@@ -1,0 +1,44 @@
+{
+  "input_dir": "/app/mediaFiles/videos/AnnotateVideos/RawVideos/CoffeePour/CoffeePour",
+  "output_dir": "/app/mediaFiles/output/videoOutputs/DetectedFrames/coffee_volume_output",
+  "glob_pat": "frame_*.jpg",
+  "detectron": {
+    "config_file": "COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml",
+    "weights_key": "COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml",
+    "score_thr": 0.7,
+    "device": "cuda"
+  },
+  "classes": {
+    "cup_name": "cup",
+    "spoon_name": "spoon"
+  },
+  "trigger_window": {
+    "before_frames": 12,
+    "after_frames": 12,
+    "inside_mode": "center-in",
+    "iou_min": 0.1
+  },
+  "roi": {
+    "height_frac": 0.4,
+    "width_frac": 0.6,
+    "right_inset_frac": 0.18,
+    "min_w": 4,
+    "min_h": 4
+  },
+  "heat": {
+    "polarity": "both",
+    "diff_thr_bright_hi": 12,
+    "diff_thr_dark_hi": 8,
+    "diff_thr_bright_lo": 6,
+    "diff_thr_dark_lo": 4,
+    "mag_thr": 0.9,
+    "vy_thr": 0.4,
+    "vert_ratio": 2.0,
+    "arrow_step": 8,
+    "arrow_scale": 2,
+    "output_scale": 4.0,
+    "top_crop_frac": 0.05,
+    "start_idx": null,
+    "end_idx": null
+  }
+}

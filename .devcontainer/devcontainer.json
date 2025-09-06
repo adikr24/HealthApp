@@ -1,0 +1,25 @@
+{
+  "name": "Detectron2 Dev Container",
+  "image": "mmaction:latest",
+  "workspaceFolder": "/app",
+  "remoteUser": "appuser",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached"
+  ],
+  "runArgs": [
+    "--gpus", "all"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/bin/python3.9"
+  },
+  "postCreateCommand": "bash -c \"sudo chown -R appuser:sudo /app && echo 'export PYTHONPATH=/opt/epic-kitchens/C1-Action-Recognition-TSN-TRN-TSM/src:$PYTHONPATH' >> ~/.bashrc && echo 'export PYTHONPATH=/opt/epic-kitchens/C1-Action-Recognition-TSN-TRN-TSM:$PYTHONPATH' >> ~/.bashrc && source ~/.bashrc\""
+}
