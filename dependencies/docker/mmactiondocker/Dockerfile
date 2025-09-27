@@ -53,6 +53,32 @@ USER appuser
 
 # Install pyzbar (into appuser’s environment)
 RUN pip install --user --no-cache-dir pyzbar
+
+##########################################################################
+# --- Add OCR tools (Tesseract, EasyOCR, pytesseract) --------------------
+##########################################################################
+
+# Switch back to root to install Tesseract + deps
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    libtesseract-dev \
+    libleptonica-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Optional: tell pytesseract where trained data lives
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00/tessdata
+
+# Back to non-root user for Python packages
+USER appuser
+WORKDIR /home/appuser
+
+RUN pip install --user --no-cache-dir \
+    easyocr \
+    pytesseract \
+    pyclipper \
+    shapely
 	
 # Launch into bash by default to provide an interactive terminal.
 CMD ["bash"]

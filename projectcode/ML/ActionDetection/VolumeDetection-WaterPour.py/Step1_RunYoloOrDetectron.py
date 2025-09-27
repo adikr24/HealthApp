@@ -9,12 +9,19 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+# ======= YOLO (Ultralytics) =======
+# pip install ultralytics
+from ultralytics import YOLO
+
+# COCO model (has 'cup' class)
 
 # ======= Paths (edit if needed) =======
 INPUT_DIR  = "/app/mediaFiles/videos/AnnotateVideos/RawVideos/WaterPour"
 OUTPUT_DIR = "/app/mediaFiles/output/videoOutputs/DetectedFrames/water_volume_output/yolopass"
 GLOB_PAT   = "frame_*.jpg"   # your frame naming pattern
 CONF_THRESH = 0.35           # YOLO confidence threshold for 'cup'
+MODEL_WEIGHTS = "/app/mediaFiles/yolo_results/YoloWeights/yolov8n.pt"   # tiny/fast; switch to yolov8s.pt for better accuracy
+
 
 # ROI shape relative to the detected cup box
 ROI_HEIGHT_FRAC = 0.40       # ROI height as a fraction of cup height
@@ -35,12 +42,6 @@ os.makedirs(ANN_DIR, exist_ok=True)
 os.makedirs(CLEAN_DIR, exist_ok=True)
 os.makedirs(MASK_DIR, exist_ok=True)
 
-# ======= YOLO (Ultralytics) =======
-# pip install ultralytics
-from ultralytics import YOLO
-
-# COCO model (has 'cup' class)
-MODEL_WEIGHTS = "yolov8n.pt"   # tiny/fast; switch to yolov8s.pt for better accuracy
 
 def clip(val, lo, hi):
     return max(lo, min(hi, val))

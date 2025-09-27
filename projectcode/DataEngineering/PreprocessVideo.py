@@ -1,25 +1,51 @@
-## this code compress the video, convert to mp4 and delete the original video to extract frames ##
-
 from projectcode.InputFileProcessor.PreprocessVidoes_CompressCutAndExtractFrames import VideoPreprocessor
-import os
-os.listdir()
+from pathlib import Path
 
+# ================== PATHS ==================
+SRC = "/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/MakingPeanutButterSandwich_II.MOV"
+OUT_MP4 = "/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/CompressedVideos/MakingPeanutButterSandwich_II.mp4"
+FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/ExtractFrames/MakingPeanutButterSandwich_II/"
+
+# make sure output folders exist
+Path(OUT_MP4).parent.mkdir(parents=True, exist_ok=True)
+Path(FRAMES_DIR).mkdir(parents=True, exist_ok=True)
+
+# init helper
 vp = VideoPreprocessor(ffmpeg_path="ffmpeg")
-mp4_path, n_frames = vp.process(
-    input_path="/app/mediaFiles/videos/inputvideos/PouringWater.MOV",
-    output_mp4="/app/mediaFiles/videos/inputvideos/PouringWater.mp4",
-    frames_dir="/app/mediaFiles/videos/AnnotateVideos/RawVideos/WaterPour",
-    # convert/encode options
-    start_time=0, duration=20,      # trim first 20s
-    scale_width=640, fps=15,        # resize + set fps
-    video_codec="libx264", preset="fast", crf=30,
-    keep_audio=True, faststart=True, overwrite=True,
-    delete_original=True,           # delete original after successful convert
-    # frame extraction options
-    every_nth=1,                    # save every frame
-    start_index=0,
-    image_ext="jpg", jpeg_quality=95
-)
-print(f"MP4 saved to: {mp4_path}")
-print(f"Frames saved: {n_frames}")
 
+# ========== STEP 1: COMPRESS VIDEO ==========
+mp4_path = vp.convert_to_mp4(
+    input_path=SRC,
+    output_path=OUT_MP4,
+    start_time=None,        # start at 0s
+    duration=None,         # keep 20s segment
+    scale_width=640,     # resize
+    fps=15,              # set fps
+    video_codec="libx264",
+    preset="fast",
+    crf=30,
+    audio_codec="aac",
+    audio_bitrate="96k",
+    faststart=True,
+    keep_audio=True,
+    overwrite=True,
+)
+print("Compressed MP4:", mp4_path)
+
+# optional: delete original after compression succeeds
+try:
+    Path(SRC).unlink()
+    print("Original deleted:", SRC)
+except Exception as e:
+    print("Delete skipped:", e)
+
+# ========== STEP 2: EXTRACT FRAMES ==========
+n_frames = vp.extract_frames(
+    video_path=mp4_path,
+    output_dir=FRAMES_DIR,
+    image_ext="jpg",
+    jpeg_quality=95,
+    every_nth=1,         # save every frame
+    start_index=0,
+)
+print(f"Frames saved in {FRAMES_DIR}: {n_frames}")

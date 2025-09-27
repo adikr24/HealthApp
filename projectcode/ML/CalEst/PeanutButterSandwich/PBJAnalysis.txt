@@ -1,0 +1,22 @@
+### PBJ notes ###
+
+"FinalProductOutput.py" 
+1. Created class to call yolo and detectron "FinalProductOutput.py" -- this calls standard yolo and detectron classes based on yolo label filtered just on food items
+2. Detectron is better at yolo for more objects but they both can't detect "Plates"; Detectron detected knife which Yolo didnt'
+3. Detectron misdetected Sandwich to be Cake
+
+Missing Detection Class
+-- Knife in Yolo
+-- Plate in both Yolo and detectron
+
+
+-- Moving ahead with the assumption sandwich was eaten as Yolo ouputs that class ---- 
+
+
+
+
+
+
+
+
+ 
