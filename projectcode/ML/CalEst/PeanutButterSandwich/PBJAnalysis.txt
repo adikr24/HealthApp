@@ -9,9 +9,14 @@ Missing Detection Class
 -- Knife in Yolo
 -- Plate in both Yolo and detectron
 
-
+"IdentifyObjectsInCookingVideo.py" under folder Cooking Analysis
 -- Moving ahead with the assumption sandwich was eaten as Yolo ouputs that class ---- 
-
+Create a new code above to play around with the PBJ and cooking analysis and identify bread brand, and count number of bread and figure out amount of peanut butter used
+ - Reason to do so
+ --> To check if Bread is identified
+ --> To check if the Bag for Bread is identified to know what brand it is and calorific intake
+ 
+ 
 
 
 

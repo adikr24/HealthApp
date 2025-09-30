@@ -98,10 +98,18 @@ class DetectronRelevantAnnotator:
         frames_dir: Union[str, Path],
         output_dir: Union[str, Path],
         glob_pat: str = "*.jpg",
-        save_empty: bool = False
+        save_empty: bool = False,
+        start_index: int = 0,          # <-- NEW: where to start in the sorted list
+        max_frames: Optional[int] = None  # <-- NEW: how many frames to process
     ) -> int:
-        """Annotate all matching images in a directory. Returns count saved."""
-        frames = sorted(Path(frames_dir).glob(glob_pat))
+        all_frames = sorted(Path(frames_dir).glob(glob_pat))
+        if start_index < 0:
+            start_index = 0
+        if max_frames is None:
+            frames = all_frames[start_index:]
+        else:
+            frames = all_frames[start_index:start_index + max_frames]
+
         out_dir = Path(output_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
 

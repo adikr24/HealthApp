@@ -16,13 +16,13 @@ annot = YoloRelevantAnnotator(
     conf_threshold=0.5,
     relevant_labels_csv=CSV,
 )
-
 # step 1 --> process frames in a folder and save results
 saved_analysis = annot.process_frames_dir(
     frames_dir="/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/FinalProduct_FoodConsumed/",
     output_dir="/app/mediaFiles/output/videoOutputs/PBJResults/FinalFoodConsumedYolo",
     glob_pat="*.jpg",   # or "frame_*.jpg" if that’s your naming convention
-    save_empty=False
+    save_empty=False,
+    max_frames=250,  # process all frames
 )
 
 print("Frames saved:", saved_analysis)
@@ -39,7 +39,8 @@ saved_detectron = det.process_frames_dir(
     frames_dir="/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/FinalProduct_FoodConsumed/",
     output_dir="/app/mediaFiles/output/videoOutputs/PBJResults/FinalFoodConsumedDetectron",
     glob_pat="*.jpg",
-    save_empty=False
+    save_empty=False,
+    max_frames=250,  # process all frames
 )
 
 print("Detectron frames saved:", saved_detectron)

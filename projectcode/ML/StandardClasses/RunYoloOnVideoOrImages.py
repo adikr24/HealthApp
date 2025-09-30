@@ -106,17 +106,42 @@ class YoloRelevantAnnotator:
         frames_dir: Union[str, Path],
         output_dir: Union[str, Path],
         glob_pat: str = "*.jpg",
-        save_empty: bool = False
+        save_empty: bool = False,
+        start_index: int = 0,          # <-- NEW: where to start in the sorted list
+        max_frames: Optional[int] = None  # <-- NEW: how many frames to process
     ) -> int:
         """
         Annotate all images matching a pattern in a directory.
+
+        Parameters
+        ----------
+        frames_dir : str | Path
+            Directory containing frames.
+        output_dir : str | Path
+            Where annotated images will be written.
+        glob_pat : str
+            Glob for frames (e.g., '*.jpg' or 'frame_*.jpg').
+        save_empty : bool
+            If False, skip frames with no relevant detections.
+        start_index : int
+            Start at this index in the sorted frame list (default 0).
+        max_frames : Optional[int]
+            If set, limit to this many frames from start_index.
 
         Returns
         -------
         saved_count : int
         """
-        frames = sorted(Path(frames_dir).glob(glob_pat))
-        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        all_frames = sorted(Path(frames_dir).glob(glob_pat))
+        if start_index < 0:
+            start_index = 0
+        if max_frames is None:
+            frames = all_frames[start_index:]
+        else:
+            frames = all_frames[start_index:start_index + max_frames]
+
+        out_dir = Path(output_dir)
+        out_dir.mkdir(parents=True, exist_ok=True)
 
         saved = 0
         for fp in frames:
@@ -125,7 +150,7 @@ class YoloRelevantAnnotator:
                 continue
             annotated, has_rel = self._annotate_frame(img)
             if has_rel or save_empty:
-                cv2.imwrite(str(Path(output_dir) / fp.name), annotated)
+                cv2.imwrite(str(out_dir / fp.name), annotated)
                 saved += 1
         return saved
 

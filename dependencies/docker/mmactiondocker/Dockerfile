@@ -80,5 +80,7 @@ RUN pip install --user --no-cache-dir \
     pyclipper \
     shapely
 	
+RUN pip install --user --no-cache-dir supervision
+	
 # Launch into bash by default to provide an interactive terminal.
 CMD ["bash"]
