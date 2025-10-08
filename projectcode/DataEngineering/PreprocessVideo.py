@@ -2,9 +2,9 @@ from projectcode.InputFileProcessor.PreprocessVidoes_CompressCutAndExtractFrames
 from pathlib import Path
 
 # ================== PATHS ==================
-SRC = "/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/MakingPeanutButterSandwich_I.MOV"
-OUT_MP4 = "/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/CompressedVideos/MakingPeanutButterSandwich_I.mp4"
-FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/PeanutButterSandwich/ExtractFrames/MakingPeanutButterSandwich_I/"
+SRC = "/app/mediaFiles/videos/InputVideos/ProteinShake/ProteinShake.MP4"
+OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ProteinShake/CompressedVideos/ProteinShake.mp4"
+FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ProteinShake/ExtractFrames/ProteinShake/"
 
 # make sure output folders exist
 Path(OUT_MP4).parent.mkdir(parents=True, exist_ok=True)
