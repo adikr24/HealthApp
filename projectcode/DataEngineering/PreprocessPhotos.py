@@ -2,8 +2,8 @@ from projectcode.InputFileProcessor.CompressandcutLargeIF import ImageResizer
 import os
 
 
-input_dir =  "/app/mediaFiles/images/inputimages/InputImagesForYoloPrep/RawImageFromSource/7classes/"
-output_dir = "/app/mediaFiles/images/inputimages/InputImagesForYoloPrep/ProcessedImageForYoloLabeling/"
+input_dir =  "/app/mediaFiles/images/inputimages/InputImagesForYoloPrep/YoloLabeling/ProteinShakeLabeling_II/OriginalImages"
+output_dir = "/app/mediaFiles/images/inputimages/InputImagesForYoloPrep/YoloLabeling/ProteinShakeLabeling_II/CompressedImages"
 
 resizer = ImageResizer(
     input_dir= input_dir,

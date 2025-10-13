@@ -12,11 +12,13 @@ OUT_DIR = ROOT / "yolo_converted"          # will create: images/ (hardlinks or 
 # =================================
 
 # Object classes you actually want boxes for (case-sensitive, match your Label Studio names)
-OBJECT_CLASSES = {
+OBJECT_CLASSES = [
+    "hand_open", "hand_closed", "hand_pinch",
     "palm", "finger",
     "bar", "sandwich", "blueberry", "almond", "walnut",
-    "plate", "bowl", "chopping_board", "blender", "container", "sink", "knife",
-}
+    "plate", "bowl", "chopping_board", "blender", "container", "sink", "knife"
+]
+
 
 # Attribute / context names to IGNORE if they appear as categories
 IGNORE_NAMES = {

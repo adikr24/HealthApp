@@ -5,3 +5,4 @@ dependencies/
 yolo_results/
 projectcode/ModelCheckpointsAndLabels/
 labeledvideos/
+runs/

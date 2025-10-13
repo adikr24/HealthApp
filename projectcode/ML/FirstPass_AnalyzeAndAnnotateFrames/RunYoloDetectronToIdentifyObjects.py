@@ -11,7 +11,7 @@ OUT_DIR_DETECTRON = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/Cooki
 
 EVERY_NTH  = 3         # analyze every 3rd frame
 CONF_THRES = 0.50      # >= 50% confidence
-MAX_FRAMES = 250       # <-- back on
+MAX_FRAMES = 600       # <-- back on
 
 # ensure output dirs exist
 OUT_DIR_YOLO.mkdir(parents=True, exist_ok=True)

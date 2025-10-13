@@ -7,7 +7,7 @@ from pathlib import Path
 
 #### CONFIG ##############################################################
 # Path to your trained YOLO model
-WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIResults/union93_yolov8n_6402/weights/best.pt"
+WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIResults/union93_yolov8n_6403/weights/best.pt"
 
 # Folder with extracted frames from your input video
 FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShake/ExtractFrames")
@@ -17,8 +17,8 @@ OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAna
 
 # Inference parameters
 EVERY_NTH  = 3          # analyze every 3rd frame
-CONF_THRES = 0.2       # confidence threshold (≥ 50%)
-MAX_FRAMES = 500       # cap total frames processed
+CONF_THRES = 0.5       # confidence threshold (≥ 50%)
+MAX_FRAMES = 1000       # cap total frames processed
 
 #######################################################################
 # Ensure output directory exists
