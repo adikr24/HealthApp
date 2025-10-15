@@ -1,13 +1,11 @@
-#!/usr/bin/env python3
-# RunYoloInferenceAllClasses.py
-# Purpose: run inference on all frames using your trained YOLOv8 model (no label filtering)
+## this code generates only person annotations from a detectron2 model and will be clubbed with custom yolo for merged predictions ##
 
 from projectcode.ML.StandardClasses.RunYoloOnVideoOrImages import YoloRelevantAnnotator
 from pathlib import Path
 
 #### CONFIG ##############################################################
 # Path to your trained YOLO model
-WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIResults/union93_yolov8n_6403/weights/best.pt"
+WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIResults/union93_yolov8n_6404/weights/best.pt"
 
 # Folder with extracted frames from your input video
 FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShake/ExtractFrames")
@@ -16,9 +14,9 @@ FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShake/ExtractFrames
 OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 
 # Inference parameters
-EVERY_NTH  = 3          # analyze every 3rd frame
+EVERY_NTH  = 2          # analyze every 3rd frame
 CONF_THRES = 0.5       # confidence threshold (≥ 50%)
-MAX_FRAMES = 1000       # cap total frames processed
+MAX_FRAMES = 2000       # cap total frames processed
 
 #######################################################################
 # Ensure output directory exists
