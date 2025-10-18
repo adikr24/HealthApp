@@ -18,10 +18,10 @@ import yaml  # pip install pyyaml
 
 
 # ---------- config defaults (edit to your paths) ----------
-DATA_YAML   = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationI/config/config.yaml"
+DATA_YAML   = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationII/config/config.yaml"
 WEIGHTS_DIR = "/app/mediaFiles/yolo_settings/YoloWeights/"
 DEFAULT_MODEL = "/app/mediaFiles/yolo_settings/YoloWeights/yolov8n.pt"  # force 8n by default
-PROJECT_DIR = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIResults/"
+PROJECT_DIR = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/"
 RUN_NAME    = "union93_yolov8n_640"
 
 IMG_SZ   = 640      # fixed as requested

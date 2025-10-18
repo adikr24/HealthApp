@@ -7,7 +7,7 @@ from pathlib import Path
 from collections import defaultdict
 
 # ========= EDIT THESE =========
-ROOT       = Path('/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationI')
+ROOT       = Path('/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationII')
 COCO_JSON  = ROOT / "result.json"
 IMAGES_DIR = ROOT / "images"
 OUT_DIR    = ROOT / "yolo_converted"   # will create: images/ + labels/ + classes.txt + attributes.csv
@@ -19,7 +19,7 @@ PREFER_POLY_BOX = True
 # Classes exactly as in your latest Label Studio config
 OBJECT_CLASSES = [
     # Hands
-    "hand_open", "hand_closed", "hand_fist", "palm", "finger",
+    "hand_open", "hand", "hand_fist", "palm", "finger",
     # Kitchen / foods
     "bar", "sandwich", "blueberry", "almond", "walnut",
     "plate", "bowl", "chopping_board", "blender", "container", "sink",
