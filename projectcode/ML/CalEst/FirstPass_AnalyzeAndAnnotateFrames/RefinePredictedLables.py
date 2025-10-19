@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 """
-Nuanced labeling:
-- INPUTS (do not modify):
-    CSV : /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/custom_yolo_detections.csv
-    IMGS: /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/*.jpg (already YOLO-annotated)
+Refine YOLO-detected hand labels into left/right/unknown based on horizontal position.
 
-- OUTPUTS (new, under nuancedlabeling/):
-    Annotated images  : .../CustomYolo/nuancedlabeling/<same frame names>
-    CSV (hands only)  : .../CustomYolo/nuancedlabeling/hands_left_right.csv
-    CSV (all + side)  : .../CustomYolo/nuancedlabeling/all_detections_with_hand_side.csv
+INPUTS (unchanged):
+  CSV : /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/custom_yolo_detections.csv
+  IMGS: /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/*.jpg
 
-Rules:
-  - If >=2 hands visible in a frame: leftmost -> left_hand, rightmost -> right_hand (ignore mid-band).
-  - If exactly 1 hand: assign by center vs midline unless the hand box intersects the mid-band; if it intersects, label 'unknown' (skip).
+OUTPUTS (new, under detailed_hand_sides/):
+  images : .../CustomYolo/detailed_hand_sides/<same frame names>
+  CSV    : .../CustomYolo/detailed_hand_sides/hands_left_right.csv            (hands only)
+  CSV    : .../CustomYolo/detailed_hand_sides/all_detections_with_hand_side.csv (all dets + side)
 """
 
 from pathlib import Path
@@ -22,18 +19,26 @@ import cv2
 # ---- PATHS -------------------------------------------------------------
 BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 CSV_PATH = BASE / "custom_yolo_detections.csv"
-IMAGES_DIR = BASE  # images already drawn by YOLO live here
-OUT_DIR = BASE / "nuancedlabeling"
+IMAGES_DIR = BASE
+OUT_DIR = BASE / "detailed_hand_sides"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ---- CONFIG ------------------------------------------------------------
-# classes considered "hands"
-HAND_CLASSNAMES = {"hand", "hand_open", "hand_closed", "hand_pinch", "palm", "on_palm"}
+# Treat these as "hand" (normalize to 'hand'). You listed: hand_open, hand, hand_fist, palm.
+# We also keep prior variants for safety.
+_HAND_EQUIV = {
+    "hand", "hand_open", "hand_fist", "palm",
+    "hand_closed", "hand_pinch", "on_palm",  # legacy/nearby variants if they appear
+}
+# Optional alias mapping if you want a single canonical class in outputs
+def normalize_hand_name(name: str) -> str:
+    n = (name or "").casefold()
+    return "hand" if n in _HAND_EQUIV else n
 
-# the “uncertain” band around midline used ONLY for the single-hand case (fraction of width)
+# The “uncertain” band around midline for single-hand case (fraction of width)
 MID_BAND_FRAC = 0.06
 
-# drawing
+# Drawing
 LINE_THICK = 2
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 TXT_SCALE = 0.5
@@ -59,25 +64,35 @@ def load_detections_by_frame(csv_path: Path):
         reader = csv.DictReader(f)
         for row in reader:
             try:
-                row["img_w"] = int(row["img_w"]); row["img_h"] = int(row["img_h"])
+                row["frame"]  = row["frame"]
+                row["img_w"]  = int(float(row["img_w"]))
+                row["img_h"]  = int(float(row["img_h"]))
                 row["cls_id"] = int(row["cls_id"]) if row.get("cls_id","") != "" else -1
-                row["conf"] = float(row["conf"]) if row.get("conf","") != "" else 0.0
-                row["x1"] = float(row["x1"]); row["y1"] = float(row["y1"])
-                row["x2"] = float(row["x2"]); row["y2"] = float(row["y2"])
+                row["conf"]   = float(row["conf"]) if row.get("conf","") != "" else 0.0
+                row["x1"]     = float(row["x1"]); row["y1"] = float(row["y1"])
+                row["x2"]     = float(row["x2"]); row["y2"] = float(row["y2"])
+                # store originals + normalized
+                row["cls_name_orig"] = row.get("cls_name","")
+                row["cls_name"]      = (row.get("cls_name") or "").casefold()
+                row["cls_name_norm"] = normalize_hand_name(row.get("cls_name"))
             except Exception:
                 continue
             frames.setdefault(row["frame"], []).append(row)
     return frames
 
+def is_hand_row(row) -> bool:
+    return row.get("cls_name","") in _HAND_EQUIV or row.get("cls_name_norm","") == "hand"
+
 def assign_hand_sides_for_frame(dets, img_w):
     """
     Returns: dict[index -> 'left'|'right'|'unknown'|'not_hand']
+
     Policy:
-      - Two or more hands: force-assign leftmost and rightmost (ignore band). Others use center vs midline with band.
-      - One hand: use band; if intersects mid-band -> 'unknown', else left/right by center.
+      - 2+ hands: leftmost -> left, rightmost -> right (ignore band); middle hands use band rule.
+      - 1 hand: use band; if its box intersects the mid-band => 'unknown', else left/right by center.
     """
     side_map = {i: "not_hand" for i in range(len(dets))}
-    hand_idxs = [i for i, d in enumerate(dets) if d["cls_name"].lower() in HAND_CLASSNAMES]
+    hand_idxs = [i for i, d in enumerate(dets) if is_hand_row(d)]
     if not hand_idxs:
         return side_map
 
@@ -93,11 +108,11 @@ def assign_hand_sides_for_frame(dets, img_w):
     if len(hands) >= 2:
         # extremes: force assign
         hands_sorted = sorted(hands, key=lambda t: t[1])  # by center x
-        left_i, left_cx, left_x1, left_x2 = hands_sorted[0]
-        right_i, right_cx, right_x1, right_x2 = hands_sorted[-1]
-        side_map[left_i] = "left"
+        left_i, _, _, _  = hands_sorted[0]
+        right_i, _, _, _ = hands_sorted[-1]
+        side_map[left_i]  = "left"
         side_map[right_i] = "right"
-        # middle ones (if any): assign conservatively
+        # middle ones (if any): assign conservatively with band
         for i, cx, x1, x2 in hands_sorted[1:-1]:
             if intersects_mid_band(x1, x2, mid_x, band_halfw):
                 side_map[i] = "unknown"
@@ -123,7 +138,6 @@ def main():
     all_rows_with_side = []
 
     for fname, dets in frames.items():
-        # open the ALREADY-ANNOTATED image as background
         img_path = IMAGES_DIR / fname
         if not img_path.exists():
             print(f"[WARN] Image not found: {img_path}")
@@ -138,10 +152,9 @@ def main():
         mid_x = W / 2.0
         band_halfw = (W * MID_BAND_FRAC) / 2.0
 
-        # side assignment (does NOT modify original CSV)
         side_map = assign_hand_sides_for_frame(dets, W)
 
-        # draw midline and band on top of the YOLO-rendered image
+        # draw midline + band
         mid_x_int = int(round(mid_x))
         cv2.line(img, (mid_x_int, 0), (mid_x_int, H), (200, 200, 200), LINE_THICK)
         band_l = int(round(mid_x - band_halfw))
@@ -150,71 +163,70 @@ def main():
         cv2.line(img, (band_r, 0), (band_r, H), (160, 160, 160), 1)
         cv2.putText(img, "midline", (mid_x_int + 6, 18), FONT, TXT_SCALE, (200, 200, 200), TXT_THICK, cv2.LINE_AA)
 
-        # overlay ONLY the hand-side labels (we don't redraw boxes to avoid clutter)
-        # but we will draw a small tag at the top-left of the original box.
+        # overlay side tags + prepare CSV rows
         for i, d in enumerate(dets):
             side = side_map[i]
-            cls = d["cls_name"].lower()
-            if cls not in HAND_CLASSNAMES:
-                # still write to all_detections_with_hand_side.csv with blank hand_side
-                all_rows_with_side.append({
-                    "frame": fname, "img_w": W, "img_h": H,
-                    "cls_id": d["cls_id"], "cls_name": d["cls_name"], "conf": d["conf"],
-                    "x1": d["x1"], "y1": d["y1"], "x2": d["x2"], "y2": d["y2"],
-                    "hand_side": ""
-                })
-                continue
 
-            # CSV rows
+            # Always write all_detections_with_hand_side
             all_rows_with_side.append({
                 "frame": fname, "img_w": W, "img_h": H,
-                "cls_id": d["cls_id"], "cls_name": d["cls_name"], "conf": d["conf"],
+                "cls_id": d["cls_id"],
+                "cls_name_orig": d.get("cls_name_orig",""),
+                "cls_name_norm": d.get("cls_name_norm",""),
+                "conf": d["conf"],
                 "x1": d["x1"], "y1": d["y1"], "x2": d["x2"], "y2": d["y2"],
-                "hand_side": side
+                "hand_side": side if is_hand_row(d) else ""
             })
 
-            if side in ("left", "right"):
+            # Hands-only CSV
+            if is_hand_row(d):
+                if side in ("left", "right"):
+                    reason = "two+_hands_extremes" if sum(1 for s in side_map.values() if s in ("left","right")) >= 2 \
+                             else "single_hand_center_rule"
+                else:
+                    reason = "midband_ambiguous"
+
                 hands_rows.append({
                     "frame": fname, "img_w": W, "img_h": H,
-                    "cls_name": "left_hand" if side == "left" else "right_hand",
+                    "cls_name_orig": d.get("cls_name_orig",""),
+                    "cls_name_norm": d.get("cls_name_norm",""),
                     "conf": d["conf"],
                     "x1": d["x1"], "y1": d["y1"], "x2": d["x2"], "y2": d["y2"],
                     "side": side,
-                    "reason": "two+_hands_extremes" if sum(1 for s in side_map.values() if s in ("left","right")) >= 2
-                              else "single_hand_center_rule"
+                    "reason": reason
                 })
 
-            # draw a small side tag on the image (non-destructive overlay)
-            tag = {"left": "LEFT", "right": "RIGHT", "unknown": "HAND?"}.get(side, "")
-            if tag:
-                x1, y1 = int(d["x1"]), int(d["y1"])
-                cv2.putText(img, tag, (x1, max(15, y1 - 6)), FONT, TXT_SCALE,
-                            color_for_side(side if side in ("left","right","unknown") else "other"),
-                            TXT_THICK, cv2.LINE_AA)
+                # draw tag for hands
+                tag = {"left": "LEFT", "right": "RIGHT", "unknown": "HAND?"}.get(side, "")
+                if tag:
+                    x1, y1 = int(d["x1"]), int(d["y1"])
+                    cv2.putText(img, tag, (x1, max(15, y1 - 6)), FONT, TXT_SCALE,
+                                color_for_side(side if side in ("left","right","unknown") else "other"),
+                                TXT_THICK, cv2.LINE_AA)
 
         # save nuanced image
         out_img = OUT_DIR / fname
         cv2.imwrite(str(out_img), img)
 
-    # write CSVs (brand-new; original CSV is untouched)
+    # write CSVs
     hands_csv = OUT_DIR / "hands_left_right.csv"
-    all_csv = OUT_DIR / "all_detections_with_hand_side.csv"
+    all_csv   = OUT_DIR / "all_detections_with_hand_side.csv"
 
     if hands_rows:
         with open(hands_csv, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=[
-                "frame","img_w","img_h","cls_name","conf","x1","y1","x2","y2","side","reason"
+                "frame","img_w","img_h","cls_name_orig","cls_name_norm","conf","x1","y1","x2","y2","side","reason"
             ])
             writer.writeheader()
             writer.writerows(hands_rows)
         print(f"[OK] Wrote: {hands_csv} ({len(hands_rows)} rows)")
     else:
-        print("[WARN] No left/right hands to write (all single-hand near midline?).")
+        print("[WARN] No hand rows found or all were 'unknown' near midline.")
 
     if all_rows_with_side:
         with open(all_csv, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=[
-                "frame","img_w","img_h","cls_id","cls_name","conf","x1","y1","x2","y2","hand_side"
+                "frame","img_w","img_h","cls_id","cls_name_orig","cls_name_norm","conf","x1","y1","x2","y2","hand_side"
             ])
             writer.writeheader()
             writer.writerows(all_rows_with_side)

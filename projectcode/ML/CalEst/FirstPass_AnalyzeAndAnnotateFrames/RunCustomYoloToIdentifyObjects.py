@@ -13,7 +13,7 @@ from ultralytics import YOLO
 
 #### CONFIG ##############################################################
 # Path to your trained YOLO model
-WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/union93_yolov8n_6402/weights/best.pt"
+WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/union93_yolov8n_6403/weights/best.pt"
 
 # Folder with extracted frames from your input video
 FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeII/ExtractFrames/ProteinShake")
