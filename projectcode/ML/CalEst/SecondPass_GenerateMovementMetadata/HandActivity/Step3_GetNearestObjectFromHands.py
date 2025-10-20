@@ -13,6 +13,7 @@ LABELS_CSV = META_DIR / "hand_rois.csv"
 
 HAND_ROI_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/HandROIs")
 OUT_DIR      = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/HandNearestObjects")
+
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 NEAREST_CSV = META_DIR / "hand_roi_closest_object.csv"

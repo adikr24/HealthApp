@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-# compute_object_to_voi_distance.py
-# Detect ANY object that comes near or crosses the VOI ROI (e.g., blender mouth)
-# and record start/end frames of activity + distances.
-# Uses the merged VOI file from the previous step (voi_bbox_and_hands_labels.csv).
-# Draws annotated frames from VOIBoundingBoxes images.
+# detectactivityaroundvoi.py (drop-in)
+# Detect ANY object near the VOI mouth ROI and summarize contiguous activity windows.
+# Adds robust handling for large frame-number jumps and per-object index gaps.
 
 from pathlib import Path
 import csv, re, math, cv2
@@ -26,16 +24,22 @@ OUT_META_DIR = Path(
 OUT_IMG_DIR = Path(
     "/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIActivity"
 )
-
 OUT_CSV = OUT_META_DIR / "voi_activity_summary.csv"
 
 # ---- PARAMETERS ----
 ROI_NAME = "blender_mouth"
+
 NEAR_THRESHOLD_PX = 80          # pixel distance threshold for "near ROI"
-GAP_TOLERANCE = 10              # tolerate this many missing frames before ending activity
+GAP_TOLERANCE = 10              # tolerate this many consecutive non-near frames before ending activity
 MIN_EVENT_FRAMES = 3            # ignore shorter blips
+
 OVERLAP_IS_ACTIVITY = True      # if bbox overlaps ROI bbox, treat as activity
-MIN_IOU_FOR_OVERLAP = 0.0       # >0 means any overlap; raise if you want stricter
+MIN_IOU_FOR_OVERLAP = 0.0       # >0 means any overlap; raise for stricter overlap
+
+# ---- NEW: frame-jump handling ----
+# You said you skip ~10 frames, and want to drop continuity if name gap > 20.
+FRAME_JUMP_CLOSE_ALL = 20       # if current_fid - prev_fid > this, close ALL active events
+PER_OBJECT_MAX_INDEX_GAP = 20   # if current_fid - last_seen_fid(object) > this, close that object's event
 
 # ---- VISUALIZATION ----
 WRITE_ANNOTATIONS = True
@@ -46,18 +50,17 @@ OVERLAP_COLOR = (0, 255, 0)
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 THICK = 2
 
+# ---- LOGGING ----
+DEBUG = True
+
 # ======================= HELPERS =======================
 
-def norm(s): 
+def norm(s):
     return (s or "").strip().lower()
 
 def frame_idx(name):
     m = re.search(r"(\d+)", Path(name).stem)
     return int(m.group(1)) if m else -1
-
-def diag(w, h):
-    try: return math.hypot(float(w), float(h))
-    except: return None
 
 def bbox_center(box):
     x1, y1, x2, y2 = box
@@ -87,7 +90,7 @@ def iou(a, b):
     return inter / max(ua, 1e-6)
 
 def ensure_dirs():
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_META_DIR.mkdir(parents=True, exist_ok=True)
     if WRITE_ANNOTATIONS:
         OUT_IMG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -105,7 +108,7 @@ def load_labels():
 
 def build_frame_dict(rows):
     """
-    Returns dict[frame] = {'roi': (cx,cy,rx1,ry1,rx2,ry2), 'objects':[...]}
+    Returns dict[frame] = {'roi': (cx,cy,rx1,ry1,rx2,ry2), 'objects':[{'cls_name', 'box'}]}
     """
     frames = defaultdict(lambda: {"roi": None, "objects": []})
 
@@ -140,6 +143,24 @@ def build_frame_dict(rows):
 
 # ======================= ACTIVITY TRACKING =======================
 
+def _close_event_for_cls(cls, ev, events):
+    dur = ev["last_idx"] - ev["start_idx"] + 1
+    if dur >= MIN_EVENT_FRAMES:
+        events.append({
+            "class": cls,
+            "start_frame": ev["start_frame"],
+            "end_frame": ev["last_frame"],
+            "start_idx": ev["start_idx"],
+            "end_idx": ev["last_idx"],
+            "avg_dist": round(sum(ev["distances"]) / len(ev["distances"]), 1),
+            "min_dist": round(min(ev["distances"]), 1),
+            "overlap_hits": ev.get("overlap_hits", 0)
+        })
+        if DEBUG:
+            print(f"[DEBUG] Closed event: {cls} {ev['start_idx']}→{ev['last_idx']} "
+                  f"(avg_dist={round(sum(ev['distances'])/len(ev['distances']),1)}, "
+                  f"overlap_hits={ev.get('overlap_hits',0)})")
+
 def main():
     ensure_dirs()
     rows = load_labels()
@@ -149,8 +170,33 @@ def main():
     active = {}
     events = []
     img_cap = 0
+    prev_fid = None
 
     for fname, data in frames.items():
+        fid = frame_idx(fname)
+
+        # ---------- CLOSE ALL on large discontinuity ----------
+        if prev_fid is not None and (fid - prev_fid) > FRAME_JUMP_CLOSE_ALL:
+            if DEBUG:
+                print(f"[DEBUG] Large frame jump detected: {prev_fid} → {fid} (> {FRAME_JUMP_CLOSE_ALL}) "
+                      f"→ closing ALL active events")
+            for cls, ev in list(active.items()):
+                _close_event_for_cls(cls, ev, events)
+            active.clear()
+        prev_fid = fid
+        # -------------------------------------------------------
+
+        # ---------- GLOBAL GAP CHECK for all active classes ----------
+        for cls, ev in list(active.items()):
+            gap_since_last_seen = fid - ev["last_idx"]
+            if gap_since_last_seen > PER_OBJECT_MAX_INDEX_GAP:
+                if DEBUG:
+                    print(f"[DEBUG] Force close {cls} (global gap): "
+                          f"{ev['last_idx']} → {fid} (gap {gap_since_last_seen})")
+                _close_event_for_cls(cls, ev, events)
+                active.pop(cls, None)
+        # -------------------------------------------------------------
+
         roi = data["roi"]
         if not roi:
             continue
@@ -166,6 +212,7 @@ def main():
             if img_path.exists():
                 img = cv2.imread(str(img_path))
 
+        # --------- process detected objects ----------
         for o in objs:
             cls = o["cls_name"]
             box = o["box"]
@@ -175,9 +222,7 @@ def main():
             ov_iou = iou(box, roi_box) if OVERLAP_IS_ACTIVITY else 0.0
             overlaps = OVERLAP_IS_ACTIVITY and (ov_iou > MIN_IOU_FOR_OVERLAP)
             near = (d <= NEAR_THRESHOLD_PX) or overlaps
-            fid = frame_idx(fname)
 
-            # --- track object activity ---
             if near:
                 if cls not in active:
                     active[cls] = {
@@ -189,6 +234,8 @@ def main():
                         "overlap_hits": 1 if overlaps else 0,
                         "missing": 0
                     }
+                    if DEBUG:
+                        print(f"[DEBUG] Start event: {cls} @ {fid}")
                 else:
                     ev = active[cls]
                     ev["last_frame"] = fname
@@ -199,56 +246,38 @@ def main():
                     ev["missing"] = 0
             else:
                 if cls in active:
-                    active[cls]["missing"] += 1
-                    if active[cls]["missing"] > GAP_TOLERANCE:
-                        ev = active.pop(cls)
-                        dur = ev["last_idx"] - ev["start_idx"] + 1
-                        if dur >= MIN_EVENT_FRAMES:
-                            events.append({
-                                "class": cls,
-                                "start_frame": ev["start_frame"],
-                                "end_frame": ev["last_frame"],
-                                "start_idx": ev["start_idx"],
-                                "end_idx": ev["last_idx"],
-                                "avg_dist": round(sum(ev["distances"]) / len(ev["distances"]), 1),
-                                "min_dist": round(min(ev["distances"]), 1),
-                                "overlap_hits": ev.get("overlap_hits", 0)
-                            })
+                    ev = active[cls]
+                    ev["missing"] += 1
+                    gap_since_last_seen = fid - ev["last_idx"]
 
-            # --- Visualization ---
-            if WRITE_ANNOTATIONS and img is not None:
-                cv2.rectangle(img, (int(rx1), int(ry1)), (int(rx2), int(ry2)), ROI_COLOR, 2)
-                cv2.circle(img, (int(rcx), int(rcy)), 4, ROI_COLOR, -1)
+                    if ev["missing"] > GAP_TOLERANCE or gap_since_last_seen > PER_OBJECT_MAX_INDEX_GAP:
+                        if DEBUG:
+                            print(f"[DEBUG] Close {cls} (local gap): "
+                                  f"{ev['last_idx']} → {fid} (gap {gap_since_last_seen})")
+                        _close_event_for_cls(cls, ev, events)
+                        active.pop(cls, None)
 
-                bx1, by1, bx2, by2 = map(int, box)
-                cv2.rectangle(img, (bx1, by1), (bx2, by2), OBJ_COLOR, 2)
-                cv2.circle(img, (int(oc[0]), int(oc[1])), 3, OBJ_COLOR, -1)
-                cv2.line(img, (int(oc[0]), int(oc[1])), (int(rcx), int(rcy)),
-                         OVERLAP_COLOR if overlaps else LINE_COLOR, 2)
-                label = f"{cls}:{int(d)}px"
-                if overlaps:
-                    label += " (overlap)"
-                cv2.putText(img, label, (int(bx1), max(0, int(by1) - 6)), FONT, 0.5,
-                            OVERLAP_COLOR if overlaps else LINE_COLOR, 1)
+        # --------- handle objects not seen in this frame ----------
+        seen_classes = {o["cls_name"] for o in objs}
+        for cls, ev in list(active.items()):
+            if cls not in seen_classes:
+                ev["missing"] += 1
+                gap_since_last_seen = fid - ev["last_idx"]
+                if ev["missing"] > GAP_TOLERANCE or gap_since_last_seen > PER_OBJECT_MAX_INDEX_GAP:
+                    if DEBUG:
+                        print(f"[DEBUG] Close {cls} (not seen): "
+                              f"{ev['last_idx']} → {fid} (gap {gap_since_last_seen})")
+                    _close_event_for_cls(cls, ev, events)
+                    active.pop(cls, None)
+        # -----------------------------------------------------------
 
         if WRITE_ANNOTATIONS and img is not None:
             cv2.imwrite(str(OUT_IMG_DIR / fname), img)
             img_cap += 1
 
     # finalize still-active events
-    for cls, ev in active.items():
-        dur = ev["last_idx"] - ev["start_idx"] + 1
-        if dur >= MIN_EVENT_FRAMES:
-            events.append({
-                "class": cls,
-                "start_frame": ev["start_frame"],
-                "end_frame": ev["last_frame"],
-                "start_idx": ev["start_idx"],
-                "end_idx": ev["last_idx"],
-                "avg_dist": round(sum(ev["distances"]) / len(ev["distances"]), 1),
-                "min_dist": round(min(ev["distances"]), 1),
-                "overlap_hits": ev.get("overlap_hits", 0)
-            })
+    for cls, ev in list(active.items()):
+        _close_event_for_cls(cls, ev, events)
 
     # Write events CSV
     with OUT_CSV.open("w", newline="") as f:
@@ -259,10 +288,10 @@ def main():
         writer.writeheader()
         writer.writerows(events)
 
-
     print(f"[DONE] Activity events written → {OUT_CSV} ({len(events)} events)")
     if WRITE_ANNOTATIONS:
         print(f"[DONE] Annotated frames → {OUT_IMG_DIR} ({img_cap} frames)")
+
 
 if __name__ == "__main__":
     main()
