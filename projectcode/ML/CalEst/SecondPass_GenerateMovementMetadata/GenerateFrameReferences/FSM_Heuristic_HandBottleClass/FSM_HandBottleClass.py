@@ -10,7 +10,7 @@ from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.GenerateFrameRefe
 BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
 CSV_ACTIVITY = BASE / "ActivityFrameSegmentation" / "all_activity_merged_frames.csv"
 FRAMES_ROOT  = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeII/ExtractFrames/ProteinShake")
-
+CSV_OUT = BASE / "bottle_ocr_image.csv"  # simplified output file
 # ---------- Helpers ----------
 def _idx_from_frame(frame_name: str) -> int:
     m = re.search(r"(\d+)", Path(frame_name).stem)
@@ -31,7 +31,7 @@ class FSM:
     def run(self):
         act = pd.read_csv(CSV_ACTIVITY)
         act.columns = [c.strip() for c in act.columns]
-
+        all_rows = []
         for _, row in act.iterrows():
             classes = str(row["classes"])
             toks = _split_classes(classes)
@@ -72,8 +72,32 @@ class FSM:
                 fname = r["frame"]
                 text = r["text"] or ""
                 print(f"  {fname} → {text}")
+                all_rows.append({
+                    "state_id": int(row["state_id"]),
+                    "classes": classes,
+                    "frame": fname,
+                    "ocr_text": text
+                })
+                print(f"  {fname} → {text}")
 
         print("\n[OK] Finished OCR preview for hand+bottle and hand+scoop states.")
+         # ----- Write output -----
+        out_df = pd.DataFrame(all_rows)
+        if out_df.empty:
+            print("[WARN] No OCR text extracted — nothing to save.")
+            return
+
+        if CSV_OUT.exists():
+            prev = pd.read_csv(CSV_OUT)
+            merged = pd.concat([prev, out_df], ignore_index=True)
+            merged.drop_duplicates(subset=["state_id", "frame"], keep="last", inplace=True)
+            merged.to_csv(CSV_OUT, index=False)
+        else:
+            out_df.to_csv(CSV_OUT, index=False)
+
+        print(f"\n[OK] OCR results written to: {CSV_OUT}")
+
+
 
 # ---------- Run directly ----------
 if __name__ == "__main__":
