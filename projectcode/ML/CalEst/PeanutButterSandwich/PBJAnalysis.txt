@@ -12,12 +12,19 @@ Missing Detection Class
 "IdentifyObjectsInCookingVideo.py" under folder Cooking Analysis
 -- Moving ahead with the assumption sandwich was eaten as Yolo ouputs that class ---- 
 Create a new code above to play around with the PBJ and cooking analysis and identify bread brand, and count number of bread and figure out amount of peanut butter used
- - Reason to do so
- --> To check if Bread is identified
- --> To check if the Bag for Bread is identified to know what brand it is and calorific intake
- 
- 
 
+Results
+-- Yolo and detectron don't detect bread they classify bread as sandwich
+-- Bread packet not identified
+-- 
+ 
+ 
+## Protien Shake notes ##
+
+FSM_HandOnlyClass.py
+1. Update this to count number of dips (currently if double dip happens it' won't recognize might have to change this code)
+
+Updated Statemachine calls 1 class at a time and overwriting is causing only 1 state to be written 
 
 
 
