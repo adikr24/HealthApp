@@ -10,6 +10,7 @@
 from pathlib import Path
 import csv, re, cv2, shutil
 from collections import Counter
+from pathlib import Path as _P
 
 # ======================= CONFIG =======================
 
@@ -130,7 +131,7 @@ def load_rows_and_blender_boxes():
         boxes_by_frame.setdefault(Path(frame_name).name, []).append((x1, y1, x2, y2))
     return in_rows, base_fields, boxes_by_frame
 
-def write_augmented_csv(in_rows, base_fields):
+def write_augmented_csv(in_rows, base_fields, flow_w):
     """Write voi_bbox_and_hands_labels.csv (ROI added to blender rows)."""
     roi_fields = [
         "roi_name", "roi_x1", "roi_y1", "roi_x2", "roi_y2",
@@ -185,6 +186,12 @@ def write_augmented_csv(in_rows, base_fields):
                     })
                     updated += 1
 
+                    # === NEW: write a row to flow_rois.csv ===
+                    
+                    fname = _P(frame_name).name if frame_name else ""
+                    flow_w.writerow([fname, rx1, ry1, rx2, ry2])
+
+
             writer.writerow(r_out)
 
     print(f"[META] Processed {total} rows; added ROI to {updated} blender rows.")
@@ -235,9 +242,20 @@ def main():
     if not IN_CSV.exists():
         raise FileNotFoundError(f"Missing nuanced labels: {IN_CSV}")
     ensure_dirs()
+    # prepare flow_rois.csv
+    flow_rois_path = OUT_META_DIR / "flow_rois.csv"
+    flow_f = flow_rois_path.open("w", newline="")
+    flow_w = csv.writer(flow_f)
+    flow_w.writerow(["filename","roi_x1","roi_y1","roi_x2","roi_y2"])
+
     copy_source_csvs()
     in_rows, base_fields, boxes_by_frame = load_rows_and_blender_boxes()
-    write_augmented_csv(in_rows, base_fields)
+
+    # pass writer here
+    write_augmented_csv(in_rows, base_fields, flow_w)
+    flow_f.close()
+    print(f"[META] flow_rois.csv → {flow_rois_path}")
+
     draw_images_all_frames(boxes_by_frame)
     print("[DONE] VOI metadata + ROI overlays complete (originals untouched).")
 

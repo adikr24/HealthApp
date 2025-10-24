@@ -1,0 +1,40 @@
+### PBJ notes ###
+--Moved peanutbuttersandwich folder to archive for now to clean the folders
+"FinalProductOutput.py" 
+1. Created class to call yolo and detectron "FinalProductOutput.py" -- this calls standard yolo and detectron classes based on yolo label filtered just on food items
+2. Detectron is better at yolo for more objects but they both can't detect "Plates"; Detectron detected knife which Yolo didnt'
+3. Detectron misdetected Sandwich to be Cake
+
+Missing Detection Class
+-- Knife in Yolo
+-- Plate in both Yolo and detectron
+
+"IdentifyObjectsInCookingVideo.py" under folder Cooking Analysis
+-- Moving ahead with the assumption sandwich was eaten as Yolo ouputs that class ---- 
+Create a new code above to play around with the PBJ and cooking analysis and identify bread brand, and count number of bread and figure out amount of peanut butter used
+
+Results
+-- Yolo and detectron don't detect bread they classify bread as sandwich
+-- Bread packet not identified
+-- 
+ 
+ 
+## Protien Shake notes ##
+
+FSM_HandOnlyClass.py
+1. Update this to count number of dips (currently if double dip happens it' won't recognize might have to change this code)
+
+Updated Statemachine calls 1 class at a time and overwriting is causing only 1 state to be written 
+
+## Differentiator of classes ## 
+## First pass --> Run Custom Yolo (working fully)
+## Second Pass --> get Hand Activity and VOI activity and generate heuristics (working partly)
+## third Pass --> given frames and objects draw heatmap and try to get bounding boxes and flow to determine volume ##
+
+
+
+
+
+
+
+ 
