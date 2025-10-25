@@ -1,11 +1,55 @@
-#!/usr/bin/env python3
-"""
-Third Pass — Volume detection visualizations for a single OOI action sequence
-- Selects greek_yogurt (2nd action sequence) from vol_detection_reference.csv
-- Slices ROI CSV to the frame window
-- Generates per-pair ROI heatmaps (blue→red) and arrow overlays
-- Copies the exact frames into clean_frames/
-"""
+import argparse
+import os
+from typing import Optional
+
+# ========= OOI selection =========
+# You can set via:
+#   - CLI:   --ooi blueberry
+#   - ENV:   OOI=blueberry
+#   - Code:  DEFAULT_OOI = "blueberry"
+DEFAULT_OOI = "protein_powder"
+
+# Optional: per-OOI presets for polarity & thresholds (you can tweak freely)
+OOI_PRESETS = {
+    "greek_yogurt": {
+        "POLARITY": "bright",
+        "DIFF_THR_BRIGHT_HI": 12, "DIFF_THR_BRIGHT_LO": 6,
+        "DIFF_THR_DARK_HI": 8,   "DIFF_THR_DARK_LO": 4,
+        "MAG_THR": 0.9, "VY_THR": 0.4, "VERT_RATIO": 2.0,
+        "ARROW_STEP": 8, "TOP_CROP_FRAC": 0.05,
+    },
+    "blueberry": {
+        "POLARITY": "dark",
+        "DIFF_THR_BRIGHT_HI": 12, "DIFF_THR_BRIGHT_LO": 6,
+        "DIFF_THR_DARK_HI": 10,   "DIFF_THR_DARK_LO": 5,
+        "MAG_THR": 0.7, "VY_THR": 0.25, "VERT_RATIO": 1.5,
+        "ARROW_STEP": 6, "TOP_CROP_FRAC": 0.0,
+    },
+    "coffee": {
+        "POLARITY": "dark",
+        "DIFF_THR_BRIGHT_HI": 12, "DIFF_THR_BRIGHT_LO": 6,
+        "DIFF_THR_DARK_HI": 9,    "DIFF_THR_DARK_LO": 5,
+        "MAG_THR": 0.8, "VY_THR": 0.3, "VERT_RATIO": 1.8,
+        "ARROW_STEP": 8, "TOP_CROP_FRAC": 0.0,
+    },
+}
+
+def parse_args():
+    p = argparse.ArgumentParser(add_help=False)
+    p.add_argument("--ooi", type=str, default=os.environ.get("OOI", DEFAULT_OOI))
+    p.add_argument("--stride", type=int, default=2, help="Frame step: 1 for (k,k+1), 2 for (k,k+2), etc.")
+    # Optional overrides so you can tweak without editing code:
+    p.add_argument("--polarity", choices=["bright","dark","both"], default=None)
+    return p.parse_args()
+
+def apply_ooi_preset(ooi_name: str):
+    # Pull preset, if exists; else do nothing (keep your current globals)
+    preset = OOI_PRESETS.get(ooi_name.lower())
+    if not preset: 
+        return
+    globals().update({k: v for k, v in preset.items() if k in globals()})
+    # Allow CLI --polarity to override later if provided
+
 
 import os, csv, json, glob, shutil
 from pathlib import Path
@@ -16,7 +60,7 @@ import pandas as pd
 
 # ========= Inputs (SecondPass metadata) =========
 VOL_REF_CSV = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/ActivityFrameSegmentation/vol_detection_reference.csv")
-ROI_MASTER_CSV_DEFAULT = VOL_REF_CSV.with_name("flow_rois.csv")
+ROI_MASTER_CSV_DEFAULT = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/flow_rois.csv")
 
 # Source frames (full extracted frames for the video)
 FRAMES_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIBoundingBoxes")
@@ -149,34 +193,37 @@ def draw_arrows_on_image(img_full, roi_box, down_mask, fx, fy):
                 pt2 = (rx1 + int(x + ARROW_SCALE * vx), ry1 + int(y + ARROW_SCALE * vy))
                 cv2.arrowedLine(img_full, pt1, pt2, (0, 255, 0), 1, tipLength=0.3)
 
-def load_reference_and_pick_sequence(vol_ref_csv: Path):
+def load_reference_and_pick_sequence(vol_ref_csv: Path, preferred_ooi: Optional[str] = None):
     if not vol_ref_csv.exists():
         raise FileNotFoundError(f"Missing vol_detection_reference.csv: {vol_ref_csv}")
     df = pd.read_csv(vol_ref_csv)
-    # Normalize headers we rely on
-    must_cols = {"start_idx","end_idx","start_frame","end_frame","classes"}
-    if not must_cols.issubset(set(df.columns)):
+
+    must_cols = {"start_idx", "end_idx", "start_frame", "end_frame", "classes"}
+    if not must_cols.issubset(df.columns):
         raise ValueError(f"{vol_ref_csv} missing required columns (needs at least {must_cols})")
 
-    # Try to use OOI if present
+    row = None
+    ooi_name = None
+
     if "OOI" in df.columns:
-        # prefer greek_yogurt row
-        mask = df["OOI"].astype(str).str.lower() == "greek_yogurt"
-        if mask.any():
-            row = df[mask].iloc[0]
-        else:
-            # fallback: second row by input order
-            row = df.iloc[1] if len(df) >= 2 else df.iloc[0]
-        ooi_name = str(row.get("OOI", "greek_yogurt")).strip()
+        if preferred_ooi:
+            mask = df["OOI"].astype(str).str.lower() == preferred_ooi.lower()
+            if mask.any():
+                row = df.loc[mask].iloc[0]
+                ooi_name = preferred_ooi
+        # fallback if preferred not found
+        if row is None and not df.empty:
+            row = df.iloc[0]
+            ooi_name = str(row.get("OOI", "unknown")).strip().lower()
     else:
-        # no OOI column: fallback to 2nd action row
-        row = df.iloc[1] if len(df) >= 2 else df.iloc[0]
-        ooi_name = "greek_yogurt"
+        # if file has no OOI column
+        row = df.iloc[1] if len(df) > 1 else df.iloc[0]
+        ooi_name = preferred_ooi or "unknown"
 
     start_idx = int(row["start_idx"])
     end_idx   = int(row["end_idx"])
-    # inclusive handling like your coffee script: process pairs (k, k+1) up to end_idx
     return ooi_name, start_idx, end_idx
+
 
 def load_roi_csv(csv_path: Path):
     roi = {}
@@ -230,20 +277,27 @@ def slice_and_save_roi_csv(master_csv: Path, out_csv: Path, start_idx: int, end_
     return out_csv
 
 def main():
-    # 1) Pick the action window (greek_yogurt / 2nd sequence)
-    ooi_name, START_IDX, END_IDX = load_reference_and_pick_sequence(VOL_REF_CSV)
+    args = parse_args()
+
+    # 1) Pick the action window, honoring your chosen OOI
+    ooi_name, START_IDX, END_IDX = load_reference_and_pick_sequence(VOL_REF_CSV, preferred_ooi=args.ooi)
     ooi_slug = ooi_name.lower().replace(" ", "_")
 
-    # 2) Prepare output dirs for this OOI
-    OOI_OUT = BASE_OUT / ooi_slug
-    OUT_DIR = OOI_OUT  # keep metadata here
+    # Apply per-OOI presets (optional)
+    apply_ooi_preset(ooi_slug)
+    if args.polarity:   # CLI override if you want
+        globals()["POLARITY"] = args.polarity
+
+    # 2) Prepare output dirs
+    OOI_OUT  = BASE_OUT / ooi_slug
+    OUT_DIR  = OOI_OUT
     HEAT_DIR = OOI_OUT / "vol_heat"
     ARW_DIR  = OOI_OUT / "arrows"
     CLEAN_DIR= OOI_OUT / "clean_frames"
     for d in (HEAT_DIR, ARW_DIR, CLEAN_DIR):
         d.mkdir(parents=True, exist_ok=True)
 
-    # 3) Make a sliced ROI CSV for this window
+    # 3) Slice ROI CSV for this window
     roi_master_csv = ROI_MASTER_CSV_DEFAULT
     ROI_OUT_CSV = OOI_OUT / "flow_rois.csv"
     try:
@@ -264,7 +318,7 @@ def main():
     end   = min(END_IDX,   all_idxs[-1])
 
     # Copy frames to clean_frames for this window
-    for k in range(start, end+1):
+    for k in range(start, end + 1):
         src = FRAMES_DIR / frame_name(k)
         if src.exists():
             dst = CLEAN_DIR / src.name
@@ -273,77 +327,72 @@ def main():
 
     rows = []
 
-    # 6) Run pairwise analysis over [start, end)
-    for k in range(start, end):
+    # 6) Run pairwise analysis with configurable stride (default 2 for k→k+2)
+    STRIDE = max(1, int(args.stride))
+    for k in range(start, end - (STRIDE - 1)):
+        k_next = k + STRIDE
+        if k_next > end:
+            break
+
         fnA = frame_name(k)
-        fnB = frame_name(k+1)
+        fnB = frame_name(k_next)
         fpA = FRAMES_DIR / fnA
         fpB = FRAMES_DIR / fnB
-
         if not (fpA.exists() and fpB.exists()):
-            continue
-
-        roiA = roi_map.get(fnA, None)
-        roiB = roi_map.get(fnB, None)
-        if (roiA is None) or (roiB is None):
             continue
 
         A = cv2.imread(str(fpA)); B = cv2.imread(str(fpB))
         if A is None or B is None:
             continue
-        H, W = A.shape[:2]
+        H, W = B.shape[:2]
 
-        # Intersect consecutive ROIs (pad)
-        ax1, ay1, ax2, ay2 = roiA
-        bx1, by1, bx2, by2 = roiB
-        ix1, iy1 = max(ax1, bx1), max(ay1, by1)
-        ix2, iy2 = min(ax2, bx2), min(ay2, by2)
+        # Prefer B's ROI, else A's
+        roiA = roi_map.get(fnA, None)
+        roiB = roi_map.get(fnB, None)
+        roi_box = roiB if roiB is not None else roiA
+        if roi_box is None:
+            continue
+
+        # Pad & clamp ROI
+        rx1, ry1, rx2, ry2 = roi_box
         PAD = 2
-        rx1 = max(0, ix1 - PAD); ry1 = max(0, iy1 - PAD)
-        rx2 = min(W, ix2 + PAD);  ry2 = min(H, iy2 + PAD)
+        rx1 = max(0, rx1 - PAD); ry1 = max(0, ry1 - PAD)
+        rx2 = min(W-1, rx2 + PAD); ry2 = min(H-1, ry2 + PAD)
         if rx2 <= rx1 or ry2 <= ry1:
             continue
 
+        # Crop same ROI from both frames
         A_roi = A[ry1:ry2, rx1:rx2]
         B_roi = B[ry1:ry2, rx1:rx2]
 
         heat_u8, down_mask, fx, fy = analyze_pair_roi(A_roi, B_roi)
-
         if SAVE_ONLY_IF_CHANGE and heat_u8.max() == 0 and not down_mask.any():
             continue
 
-        # Heat (ROI-only), scaled
+        # Save heatmap (ROI-only), scaled
         heat_roi_bgr = apply_blue2red(heat_u8)
-        heat_vis = cv2.resize(
-            heat_roi_bgr, None, fx=OUTPUT_SCALE, fy=OUTPUT_SCALE,
-            interpolation=cv2.INTER_NEAREST
-        )
-        heat_path = HEAT_DIR / f"heat_{k+1:05d}.png"
+        heat_vis = cv2.resize(heat_roi_bgr, None, fx=OUTPUT_SCALE, fy=OUTPUT_SCALE, interpolation=cv2.INTER_NEAREST)
+        heat_path = HEAT_DIR / f"heat_{k_next:05d}.png"
         cv2.imwrite(str(heat_path), heat_vis)
 
-        # Arrow overlay (ROI-only), scaled
+        # Save arrows (ROI-only), scaled
         arrow_roi = B[ry1:ry2, rx1:rx2].copy()
-        draw_arrows_on_image(
-            arrow_roi, (0, 0, arrow_roi.shape[1], arrow_roi.shape[0]),
-            down_mask, fx, fy
-        )
-        arrow_vis = cv2.resize(
-            arrow_roi, None, fx=OUTPUT_SCALE, fy=OUTPUT_SCALE,
-            interpolation=cv2.INTER_NEAREST
-        )
-        arrows_path = ARW_DIR / f"arrows_{k+1:05d}.png"
+        draw_arrows_on_image(arrow_roi, (0, 0, arrow_roi.shape[1], arrow_roi.shape[0]), down_mask, fx, fy)
+        arrow_vis = cv2.resize(arrow_roi, None, fx=OUTPUT_SCALE, fy=OUTPUT_SCALE, interpolation=cv2.INTER_NEAREST)
+        arrows_path = ARW_DIR / f"arrows_{k_next:05d}.png"
         cv2.imwrite(str(arrows_path), arrow_vis)
 
         rows.append({
             "ooi": ooi_slug,
-            "k_next": k+1,
+            "k_next": k_next,
             "frameA": fnA,
             "frameB": fnB,
             "roi_box_xyxy": [rx1, ry1, rx2, ry2],
             "heat_saved": str(heat_path),
             "arrows_saved": str(arrows_path),
             "heat_max": int(heat_u8.max()),
-            "any_downward": bool(np.any(down_mask))
+            "any_downward": bool(np.any(down_mask)),
+            "stride": STRIDE,
         })
 
     # 7) Save a tiny viz summary + meta
@@ -370,6 +419,8 @@ def main():
         "range_used": [int(START_IDX), int(END_IDX)]
     }
     print(json.dumps(meta, indent=2))
+
+
 
 if __name__ == "__main__":
     main()

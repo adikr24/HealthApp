@@ -22,7 +22,7 @@ FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeII/ExtractFram
 OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 
 # Inference parameters
-EVERY_NTH  = 2          # analyze every 2nd frame
+EVERY_NTH  = 1          # analyze every 2nd frame
 CONF_THRES = 0.5        # confidence threshold (≥ 50%)
 MAX_FRAMES = 2000       # cap total frames processed
 
