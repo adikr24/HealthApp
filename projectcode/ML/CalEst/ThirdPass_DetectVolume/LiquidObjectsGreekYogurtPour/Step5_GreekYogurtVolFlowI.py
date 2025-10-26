@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-# Calibrate inflow from gray_heat PNGs so that total inflow equals 680 g.
-# Outputs per-frame ΔL (positive/negative), calibrated grams per frame, and cumulative grams.
+## use step 6 as that's the same and calibrated for the setup ##
 
 from __future__ import annotations
 import re, json

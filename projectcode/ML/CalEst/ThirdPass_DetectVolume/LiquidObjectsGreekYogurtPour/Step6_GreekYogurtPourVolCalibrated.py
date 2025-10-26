@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-# Pinned-calibration inflow from gray_heat PNGs.
-# Uses grams_per_unit learned previously, so no per-run total grams needed.
+## use this setup the grams per unit came from calibrating the setup ## 
 
 from __future__ import annotations
 import re, json
