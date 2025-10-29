@@ -1,17 +1,4 @@
 #!/usr/bin/env python3
-"""
-Refine YOLO-detected hand labels into left/right/unknown based on horizontal position.
-
-INPUTS (unchanged):
-  CSV : /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/custom_yolo_detections.csv
-  IMGS: /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/*.jpg
-
-OUTPUTS (new, under detailed_hand_sides/):
-  images : .../CustomYolo/detailed_hand_sides/<same frame names>
-  CSV    : .../CustomYolo/detailed_hand_sides/hands_left_right.csv            (hands only)
-  CSV    : .../CustomYolo/detailed_hand_sides/all_detections_with_hand_side.csv (all dets + side)
-"""
-
 from pathlib import Path
 import csv
 import cv2
