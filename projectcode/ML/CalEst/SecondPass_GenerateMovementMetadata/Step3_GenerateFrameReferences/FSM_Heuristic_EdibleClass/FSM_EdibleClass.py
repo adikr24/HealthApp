@@ -65,7 +65,7 @@ class FSM:
         ooi_list = []
         for _, row in self.act.iterrows():
             tokens = [t.strip().lower() for t in str(row.get("classes", "")).split("|") if t.strip()]
-            ooi = next((t for t in tokens if t in self.edible_set), "")
+            ooi = next((t for t in tokens if t in self.edible_set), "NA")
             ooi_list.append(ooi)
 
         out_df = self.act.copy()

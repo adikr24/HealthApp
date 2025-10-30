@@ -178,7 +178,7 @@ class FSM:
         for _, r in act.iterrows():
             sid = int(r["state_id"])
             ooi = early_norm.get(sid, "NA")
-            boc = early_token.get(sid, "")  # keyword token (e.g., 'chobani', 'whey'); empty if none
+            boc = early_token.get(sid, "NA")  # keyword token (e.g., 'chobani', 'whey'); empty if none
             add_rows.append({"state_id": sid, "OOI": ooi, "bottle_ocr": boc})
         add_df = pd.DataFrame(add_rows)
 
