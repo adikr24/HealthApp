@@ -66,7 +66,8 @@ class FSM:
         if hand_rows.empty:
             print("[OK] No hand-only activities found.")
             return
-
+        else:
+            print('entering HandOnly Class')
         for _, row in hand_rows.iterrows():
             start_idx = int(row["start_idx"])
             state_id = int(row["state_id"])
