@@ -85,14 +85,14 @@ def main() -> int:
         return 3
 
     # --- Hand+bottle FSM ---
-    try:
-        if _has_hand_bottle(act):
-            HandBottleFSM().run()
-            print("[OK] Step2: Hand+bottle FSM executed and fsm_heuristics.csv written.")
-            ran_fsm = True
-    except Exception as e:
-        print(f"[ERROR] Step2: Hand+bottle FSM failed: {e}", file=sys.stderr)
-        return 4
+    # try:
+    #     if _has_hand_bottle(act):
+    #         HandBottleFSM().run()
+    #         print("[OK] Step2: Hand+bottle FSM executed and fsm_heuristics.csv written.")
+    #         ran_fsm = True
+    # except Exception as e:
+    #     print(f"[ERROR] Step2: Hand+bottle FSM failed: {e}", file=sys.stderr)
+    #     return 4
 
     # --- Edible FSM ---
     try:
