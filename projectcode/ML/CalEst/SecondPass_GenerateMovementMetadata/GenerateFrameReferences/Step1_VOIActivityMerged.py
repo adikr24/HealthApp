@@ -48,7 +48,7 @@ ignore_classes = set(
 df = pd.read_csv(ACTIVITY_CSV)
 df.columns = [c.strip().lower() for c in df.columns]
 
-required = {"class","start_frame","end_frame","start_idx","end_idx","avg_dist","min_dist","overlap_hits"}
+required = {"class","start_frame","end_frame","start_idx","end_idx","avg_dist","min_dist","overlap_hits","VOI"}
 missing = [c for c in required if c not in df.columns]
 if missing:
     raise ValueError(f"Activity CSV missing required columns: {missing}")
@@ -65,6 +65,7 @@ if not df.empty:
     cur_end_idx   = int(df.loc[0, "end_idx"])
     cur_start_frame = str(df.loc[0, "start_frame"])
     cur_end_frame   = str(df.loc[0, "end_frame"])
+    cur_voi = str(df.loc[0, "voi"])
     seen_classes = OrderedDict()
     seen_classes[str(df.loc[0, "class"])] = True
 
@@ -89,7 +90,8 @@ if not df.empty:
                 "end_idx": cur_end_idx,
                 "start_frame": cur_start_frame,
                 "end_frame": cur_end_frame,
-                "classes": classes_str
+                "classes": classes_str,
+                "VOI": cur_voi
             })
             # start a new state
             cur_start_idx = s
@@ -106,7 +108,8 @@ if not df.empty:
         "end_idx": cur_end_idx,
         "start_frame": cur_start_frame,
         "end_frame": cur_end_frame,
-        "classes": classes_str
+        "classes": classes_str,
+        "VOI": cur_voi
     })
 
 # ----- BUILD OUTPUT DF -----
@@ -118,6 +121,7 @@ out_df = pd.DataFrame([{
     "start_frame": st["start_frame"],
     "end_frame": st["end_frame"],
     "classes": st["classes"],
+    "VOI": st["VOI"]
 } for i, st in enumerate(merged_states)])
 
 # Ensure destination directory exists

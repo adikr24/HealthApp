@@ -27,7 +27,7 @@ OUT_IMG_DIR = Path(
 OUT_CSV = OUT_META_DIR / "voi_activity_summary.csv"
 
 # ---- PARAMETERS ----
-ROI_NAME = "blender_mouth"
+ROI_NAME = "blender"
 
 NEAR_THRESHOLD_PX = 80          # pixel distance threshold for "near ROI"
 GAP_TOLERANCE = 10              # tolerate this many consecutive non-near frames before ending activity
@@ -154,12 +154,13 @@ def _close_event_for_cls(cls, ev, events):
             "end_idx": ev["last_idx"],
             "avg_dist": round(sum(ev["distances"]) / len(ev["distances"]), 1),
             "min_dist": round(min(ev["distances"]), 1),
-            "overlap_hits": ev.get("overlap_hits", 0)
+            "overlap_hits": ev.get("overlap_hits", 0),
+            "VOI": ev.get("roi_name", ROI_NAME)
         })
         if DEBUG:
             print(f"[DEBUG] Closed event: {cls} {ev['start_idx']}→{ev['last_idx']} "
                   f"(avg_dist={round(sum(ev['distances'])/len(ev['distances']),1)}, "
-                  f"overlap_hits={ev.get('overlap_hits',0)})")
+                  f"overlap_hits={ev.get('overlap_hits',0)}, VOI={ev.get('roi_name', ROI_NAME)})")
 
 def main():
     ensure_dirs()
@@ -232,7 +233,8 @@ def main():
                         "last_idx": fid,
                         "distances": [d],
                         "overlap_hits": 1 if overlaps else 0,
-                        "missing": 0
+                        "missing": 0,
+                        "roi_name": ROI_NAME
                     }
                     if DEBUG:
                         print(f"[DEBUG] Start event: {cls} @ {fid}")
@@ -283,7 +285,7 @@ def main():
     with OUT_CSV.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=[
             "class","start_frame","end_frame","start_idx","end_idx",
-            "avg_dist","min_dist","overlap_hits"
+            "avg_dist","min_dist","overlap_hits","VOI"
         ])
         writer.writeheader()
         writer.writerows(events)

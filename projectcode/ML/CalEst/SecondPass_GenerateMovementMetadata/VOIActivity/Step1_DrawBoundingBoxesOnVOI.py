@@ -178,7 +178,7 @@ def write_augmented_csv(in_rows, base_fields, flow_w):
                     rh = int(round(ry2 - ry1))
 
                     r_out.update({
-                        "roi_name": "blender_mouth",
+                        "roi_name": "blender",
                         "roi_x1": rx1, "roi_y1": ry1,
                         "roi_x2": rx2, "roi_y2": ry2,
                         "roi_cx": rcx, "roi_cy": rcy,
