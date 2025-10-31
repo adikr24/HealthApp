@@ -16,7 +16,7 @@ import pandas as pd
 from PIL import Image
 
 # ---------- Paths ----------
-VOL_REF_CSV   = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/ActivityFrameSegmentation/vol_detection_reference.csv")
+VOL_REF_CSV   = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/FSM/fsm_heuristics_Merged.csv")
 ROI_MASTER    = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/ThirdPass_DetectVolume/VOIYolo_ROI/flow_rois.csv")
 FRAMES_DIR    = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/ThirdPass_DetectVolume/VOIYolo_ROI/")
 OUT_BASE_DIR  = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/ThirdPass_DetectVolume/volume_bands/")

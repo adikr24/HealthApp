@@ -8,7 +8,7 @@ from ultralytics import YOLO
 # ==== PATHS (your request) ====================================================
 WEIGHTS    = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/union93_yolov8n_6403/weights/best.pt"
 FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeII/ExtractFrames/ProteinShake")
-OUT_BASE   = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/ThirdPass_DetectVolume/volume_bands/protein_powder/AnnotatedFrames/ScoopCrop")
+OUT_BASE   = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/ThirdPass_DetectVolume/volume_bands/protein_powder/AnnotatedFrames")
 # ==============================================================================
 
 # SCOOP-ONLY
