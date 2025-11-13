@@ -2,13 +2,13 @@ from projectcode.InputFileProcessor.PreprocessVidoes_CompressCutAndExtractFrames
 from pathlib import Path
 
 # ================== PATHS ==================
-SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/FishAndPotatoes/PutPotatoesInOven.MP4"
+SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/FishAndPotatoes/SlicingSweetPotatoes.MP4"
 
 # OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/CompressedVideo/FilledScoop.MP4"
 # FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/ExtractedFrames/EmptyScoop"
 
-OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/PutPotatoesInOven/PutPotatoesInOven.MP4"
-FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/PutPotatoesInOven/"
+OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/SlicingSweetPotatoes.MP4"
+FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/"
 
 
 # make sure output folders exist
