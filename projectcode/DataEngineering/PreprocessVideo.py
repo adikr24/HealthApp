@@ -2,13 +2,13 @@ from projectcode.InputFileProcessor.PreprocessVidoes_CompressCutAndExtractFrames
 from pathlib import Path
 
 # ================== PATHS ==================
-SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/TofuAndVeggies/CuttingBroccoliAndGreenBeans.MP4"
+SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/FishAndPotatoes/PutPotatoesInOven.MP4"
 
 # OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/CompressedVideo/FilledScoop.MP4"
 # FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/ExtractedFrames/EmptyScoop"
 
-OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/CuttingBroccoliAndGreenBeans/CuttingBroccoliAndGreenBeans.MP4"
-FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/CuttingBroccoliAndGreenBeans/"
+OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/PutPotatoesInOven/PutPotatoesInOven.MP4"
+FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/PutPotatoesInOven/"
 
 
 # make sure output folders exist
@@ -38,11 +38,11 @@ mp4_path = vp.convert_to_mp4(
 print("Compressed MP4:", mp4_path)
 
 # optional: delete original after compression succeeds
-try:
-    Path(SRC).unlink()
-    print("Original deleted:", SRC)
-except Exception as e:
-    print("Delete skipped:", e)
+# try:
+#     Path(SRC).unlink()
+#     print("Original deleted:", SRC)
+# except Exception as e:
+#     print("Delete skipped:", e)
 
 # ========== STEP 2: EXTRACT FRAMES ==========
 n_frames = vp.extract_frames(
