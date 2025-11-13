@@ -51,7 +51,7 @@ class VideoPreprocessor:
         faststart: bool = True,
         keep_audio: bool = True,
         overwrite: bool = True,
-        delete_original: bool = True,
+        delete_original: bool = False,
         # Frame extraction options
         image_ext: str = "jpg",
         jpeg_quality: int = 95,
