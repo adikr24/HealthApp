@@ -18,7 +18,7 @@ import re
 from collections import Counter
 
 # ---------- Paths ----------
-BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
+BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
 ACT_PATH  = BASE / "ActivityFrameSegmentation" / "all_activity_merged_frames.csv"
 HAND_PATH = BASE / "HandActivity" / "hand_roi_closest_object.csv"
 OUT_PATH  = BASE / "FSM" / "fsm_heuristics_HandOnly.csv"

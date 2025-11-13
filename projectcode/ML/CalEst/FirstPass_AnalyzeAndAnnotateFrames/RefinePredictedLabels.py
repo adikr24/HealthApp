@@ -4,7 +4,7 @@ import csv
 import cv2
 
 # ---- PATHS -------------------------------------------------------------
-BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
+BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 CSV_PATH = BASE / "custom_yolo_detections.csv"
 IMAGES_DIR = BASE
 OUT_DIR = BASE / "detailed_hand_sides"

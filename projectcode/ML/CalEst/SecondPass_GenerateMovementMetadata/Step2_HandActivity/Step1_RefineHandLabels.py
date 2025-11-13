@@ -20,11 +20,11 @@ from collections import defaultdict
 # =============== CONFIG ===============
 
 # Source (read-only)
-SRC_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/detailed_hand_sides")
+SRC_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/detailed_hand_sides")
 IN_CSV  = SRC_DIR / "all_detections_with_hand_side.csv"
 
 # Outputs
-OUT_ROOT   = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata")
+OUT_ROOT   = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata")
 
 # write CSVs under Metadata/HandActivity
 OUT_META   = OUT_ROOT / "Metadata" / "HandActivity"

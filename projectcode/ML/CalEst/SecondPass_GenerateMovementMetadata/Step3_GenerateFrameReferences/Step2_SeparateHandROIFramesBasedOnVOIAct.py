@@ -15,11 +15,11 @@ import pandas as pd
 import sys
 
 # ---------- Import FSMs ----------
-from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.GenerateFrameReferences.FSM_Heurisitc_HandOnlyClass.FSM_HandOnlyClass import FSM as HandOnlyFSM
-from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.GenerateFrameReferences.FSM_Heuristic_HandBottleClass.FSM_HandBottleClass import FSM as HandBottleFSM
-from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.GenerateFrameReferences.FSM_Heuristic_EdibleClass.FSM_EdibleClass import FSM as EdibleFSM
+from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.Step3_GenerateFrameReferences.FSM_Heurisitc_HandOnlyClass.FSM_HandOnlyClass import FSM as HandOnlyFSM
+from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.Step3_GenerateFrameReferences.FSM_Heuristic_HandBottleClass.FSM_HandBottleClass import FSM as HandBottleFSM
+from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.Step3_GenerateFrameReferences.FSM_Heuristic_EdibleClass.FSM_EdibleClass import FSM as EdibleFSM
 # ---------- Base paths ----------
-BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
+BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
 ACT_MERGED = BASE / "ActivityFrameSegmentation" / "all_activity_merged_frames.csv"
 ACT_ALT    = BASE / "ActivityFrameSegmentation" / "all_activity_frames.csv"
 YOLO_LABELS = Path("/app/mediaFiles/StaticCSVLists/YoloLabels.csv")

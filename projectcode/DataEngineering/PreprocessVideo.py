@@ -2,13 +2,13 @@ from projectcode.InputFileProcessor.PreprocessVidoes_CompressCutAndExtractFrames
 from pathlib import Path
 
 # ================== PATHS ==================
-SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/FishAndPotatoes/SlicingSweetPotatoes.MP4"
+SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/ProteinShakeInf/ProteinShakeInference.MP4"
+OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ProteinShakeIII/CompressedVideos/ProteinShakeInf.MP4"
+#OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/CompressedVideo/FilledScoop.MP4"
+FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ProteinShakeIII/ExtractFrames/ProteinShakeInf/"
 
-# OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/CompressedVideo/FilledScoop.MP4"
-# FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/ExtractedFrames/EmptyScoop"
-
-OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/SlicingSweetPotatoes.MP4"
-FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/"
+# OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/SlicingSweetPotatoes.MP4"
+# FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/"
 
 
 # make sure output folders exist

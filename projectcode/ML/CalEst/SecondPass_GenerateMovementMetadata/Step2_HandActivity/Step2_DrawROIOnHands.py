@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 
 # ======================= PATHS =======================
 
-BASE_SECOND = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata")
+BASE_SECOND = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata")
 
 # Primary hand-labeled inputs (first existing is used)
 PRIMARY_LABELS = [

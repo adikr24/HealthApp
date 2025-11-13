@@ -8,11 +8,11 @@ import cv2
 
 
 # ======= PATHS ===============================================================
-META_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/HandActivity")
+META_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/HandActivity")
 LABELS_CSV = META_DIR / "hand_rois.csv"
 
-HAND_ROI_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/HandROIs")
-OUT_DIR      = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/HandNearestObjects")
+HAND_ROI_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/HandROIs")
+OUT_DIR      = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/HandNearestObjects")
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

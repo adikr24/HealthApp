@@ -28,9 +28,9 @@ from pathlib import Path
 import pandas as pd
 
 # ----- CONFIG -----
-ACTIVITY_CSV = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/voi_activity_summary.csv")
+ACTIVITY_CSV = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/voi_activity_summary.csv")
 LABELS_CSV   = Path("/app/mediaFiles/images/StaticCSVLists/YoloLabels.csv")
-OUT_CSV      = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/ActivityFrameSegmentation/all_activity_merged_frames.csv")
+OUT_CSV      = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/ActivityFrameSegmentation/all_activity_merged_frames.csv")
 
 MAX_GAP = 10  # frames; set to 0 if you want strict overlap only
 

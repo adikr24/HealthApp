@@ -16,7 +16,7 @@ import pandas as pd
 from pathlib import Path
 
 # ---------- Paths ----------
-BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
+BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
 ACT_PATH = BASE / "ActivityFrameSegmentation" / "all_activity_merged_frames.csv"
 YOLO_LABELS = Path("/app/mediaFiles/StaticCSVLists/YoloLabels.csv")
 OUT_PATH = BASE / "FSM" / "fsm_heuristics_EdibleClass.csv"

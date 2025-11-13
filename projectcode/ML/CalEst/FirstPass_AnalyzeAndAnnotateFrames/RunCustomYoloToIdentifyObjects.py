@@ -16,15 +16,15 @@ from ultralytics import YOLO
 WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/union93_yolov8n_6403/weights/best.pt"
 
 # Folder with extracted frames from your input video
-FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeII/ExtractFrames/ProteinShake")
+FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeIII/ExtractFrames/ProteinShakeInf")
 
 # Output folder for annotated results
-OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
+OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 
 # Inference parameters
 EVERY_NTH  = 1          # analyze every 2nd frame
 CONF_THRES = 0.5        # confidence threshold (≥ 50%)
-MAX_FRAMES = 2000       # cap total frames processed
+MAX_FRAMES = 2200       # cap total frames processed
 
 # === NEW: CSV output path ===
 SUMMARY_CSV = OUT_DIR_YOLO / "custom_yolo_detections.csv"

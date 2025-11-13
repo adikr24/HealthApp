@@ -5,14 +5,14 @@ import re
 import pandas as pd
 from difflib import SequenceMatcher
 
-from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.GenerateFrameReferences.FSM_Heuristic_HandBottleClass.LabelDetection import FrameOCRRunner
+from projectcode.ML.CalEst.SecondPass_GenerateMovementMetadata.Step3_GenerateFrameReferences.FSM_Heuristic_HandBottleClass.LabelDetection import FrameOCRRunner
 
 # ---------- Paths ----------
-BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
+BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
 CSV_ACTIVITY = BASE / "ActivityFrameSegmentation" / "all_activity_merged_frames.csv"
 CSV_ACTIVITY_ALT = BASE / "ActivityFrameSegmentation" / "all_activity_frames.csv"
 
-FRAMES_ROOT  = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeII/ExtractFrames/ProteinShake")
+FRAMES_ROOT  = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeIII/ExtractFrames/ProteinShake")
 CSV_OUT = BASE / "bottle_ocr_image.csv"                      # frame-level log
 OUT_CSV = BASE / "FSM" / "fsm_heuristics_HandBottle.csv"     # state-level heuristics
 

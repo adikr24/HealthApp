@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 # ---------- CONFIG ----------
-BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/FSM")
+BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/FSM")
 EDIBLE_CSV     = BASE / "fsm_heuristics_EdibleClass.csv"
 HANDBOTTLE_CSV = BASE / "fsm_heuristics_HandBottle.csv"
 HANDONLY_CSV   = BASE / "fsm_heuristics_HandOnly.csv"

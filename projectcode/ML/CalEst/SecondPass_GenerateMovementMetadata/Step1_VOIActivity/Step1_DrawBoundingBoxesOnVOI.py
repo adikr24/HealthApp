@@ -16,13 +16,13 @@ from pathlib import Path as _P
 
 # Input (read-only)
 FUSED_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/detailed_hand_sides"
+    "/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/detailed_hand_sides"
 )
 IN_CSV = FUSED_DIR / "all_detections_with_hand_side.csv"
 
 # Second-pass outputs
 OUT_META_ROOT = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/SecondPass_GenerateMovementMetadata"
+    "/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata"
 )
 OUT_META_DIR = OUT_META_ROOT / "Metadata"
 OUT_IMG_DIR = OUT_META_ROOT / "bounding_boxes" / "VOIBoundingBoxes"  # <- organized
