@@ -13,13 +13,13 @@ from ultralytics import YOLO
 
 #### CONFIG ##############################################################
 # Path to your trained YOLO model
-WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/union93_yolov8n_6403/weights/best.pt"
+WEIGHTS = "/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloResultIterations/IterationIIResults/union93_yolov8n_6402/weights/best.pt"
 
 # Folder with extracted frames from your input video
-FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeIII/ExtractFrames/ProteinShakeInf")
+FRAMES_DIR = Path("/app/mediaFiles/videos/InputVideos/ProteinShakeIV/ExtractFrames/ProteinShakeInf")
 
 # Output folder for annotated results
-OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
+OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 
 # Inference parameters
 EVERY_NTH  = 1          # analyze every 2nd frame

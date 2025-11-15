@@ -2,10 +2,10 @@ from projectcode.InputFileProcessor.PreprocessVidoes_CompressCutAndExtractFrames
 from pathlib import Path
 
 # ================== PATHS ==================
-SRC = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoFile/ProteinShakeInf/ProteinShakeInference.MP4"
-OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ProteinShakeIII/CompressedVideos/ProteinShakeInf.MP4"
+SRC = "/app/mediaFiles/videos/InputVideos/ProteinShakeIV/proteinshake_IV.MP4"
+OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ProteinShakeIV/CompressedVideos/ProteinShakeInf.MP4"
 #OUT_MP4 = "/app/mediaFiles/videos/InputVideos/ScoopVolume/FilledScoop/CompressedVideo/FilledScoop.MP4"
-FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ProteinShakeIII/ExtractFrames/ProteinShakeInf/"
+FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/ProteinShakeIV/ExtractFrames/ProteinShakeInf/"
 
 # OUT_MP4 = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/SlicingSweetPotatoes.MP4"
 # FRAMES_DIR = "/app/mediaFiles/videos/InputVideos/VideosToAnnotate/VideoInfFile/FishAndPotatoes/SlicingSweetPotatoes/"
