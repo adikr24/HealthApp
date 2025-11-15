@@ -7,7 +7,7 @@ from pathlib import Path
 from collections import defaultdict
 
 # ========= EDIT THESE =========
-ROOT       = Path('/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationII')
+ROOT       = Path('/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationII_extd_ps_inf')
 COCO_JSON  = ROOT / "result.json"
 IMAGES_DIR = ROOT / "images"
 OUT_DIR    = ROOT / "yolo_converted"   # will create: images/ + labels/ + classes.txt + attributes.csv

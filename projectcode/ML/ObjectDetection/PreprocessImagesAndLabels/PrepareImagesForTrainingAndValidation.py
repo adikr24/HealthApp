@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 # ========= EDIT THESE =========
-ROOT = Path("/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationII")
+ROOT = Path("/app/mediaFiles/images/YoloTrainingImages/yolotrainingReadyImages/YoloIterations/IterationII_extd_ps_inf")
 SRC_DIR = ROOT / "yolo_converted"
 IMAGES_DIR = SRC_DIR / "images"
 LABELS_DIR = SRC_DIR / "labels"
