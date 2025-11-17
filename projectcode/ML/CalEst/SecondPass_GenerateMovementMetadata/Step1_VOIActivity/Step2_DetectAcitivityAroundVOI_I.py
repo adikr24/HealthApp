@@ -11,35 +11,35 @@ from collections import defaultdict
 
 # ---- INPUTS ----
 IN_LABELS = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/voi_bbox_and_hands_labels.csv"
+    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/voi_bbox_and_hands_labels.csv"
 )
 IN_IMG_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIBoundingBoxes"
+    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIBoundingBoxes"
 )
 
 # ---- OUTPUTS ----
 OUT_META_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata"
+    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata"
 )
 OUT_IMG_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIActivity"
+    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIActivity"
 )
 OUT_CSV = OUT_META_DIR / "voi_activity_summary.csv"
 
 # ---- PARAMETERS ----
 ROI_NAME = "blender"
 
-NEAR_THRESHOLD_PX = 10        # CHANGED: expanded pixel distance threshold for "near ROI" (was 80)
-GAP_TOLERANCE = 10              # tolerate this many consecutive non-near frames before ending activity
-MIN_EVENT_FRAMES = 3            # ignore shorter blips
+NEAR_THRESHOLD_PX = 10        # pixel distance threshold for "near ROI"
+GAP_TOLERANCE = 10            # tolerate this many consecutive non-near frames before ending activity
+MIN_EVENT_FRAMES = 3          # ignore shorter blips
 
-OVERLAP_IS_ACTIVITY = True      # if bbox overlaps ROI bbox, treat as activity
-MIN_IOU_FOR_OVERLAP = 0.0       # >0 means any overlap; raise for stricter overlap
+OVERLAP_IS_ACTIVITY = True    # if bbox overlaps ROI bbox, treat as activity
+MIN_IOU_FOR_OVERLAP = 0.0     # >0 means any overlap; raise for stricter overlap
 
-# ---- NEW: ignore hand classes in VOI activity tracking
-HAND_CLASSES = {"hand", "hand_fist"}   # NEW: adjust to match your normalized class names
+# ---- ignore hand classes in VOI activity tracking
+HAND_CLASSES = {"hand", "hand_fist"}
 
-# ---- NEW: frame-jump handling ----
+# ---- frame-jump handling ----
 FRAME_JUMP_CLOSE_ALL = 20       # if current_fid - prev_fid > this, close ALL active events
 PER_OBJECT_MAX_INDEX_GAP = 20   # if current_fid - last_seen_fid(object) > this, close that object's event
 
@@ -96,6 +96,9 @@ def ensure_dirs():
     if WRITE_ANNOTATIONS:
         OUT_IMG_DIR.mkdir(parents=True, exist_ok=True)
 
+def fmt_dist(x):
+    return "NA" if x is None else f"{x:.1f}"
+
 # ======================= LOAD LABELS =======================
 
 def load_labels():
@@ -147,22 +150,40 @@ def build_frame_dict(rows):
 
 def _close_event_for_cls(cls, ev, events):
     dur = ev["last_idx"] - ev["start_idx"] + 1
-    if dur >= MIN_EVENT_FRAMES:
-        events.append({
-            "class": cls,
-            "start_frame": ev["start_frame"],
-            "end_frame": ev["last_frame"],
-            "start_idx": ev["start_idx"],
-            "end_idx": ev["last_idx"],
-            "avg_dist": round(sum(ev["distances"]) / len(ev["distances"]), 1),
-            "min_dist": round(min(ev["distances"]), 1),
-            "overlap_hits": ev.get("overlap_hits", 0),
-            "VOI": ev.get("roi_name", ROI_NAME)
-        })
-        if DEBUG:
-            print(f"[DEBUG] Closed event: {cls} {ev['start_idx']}→{ev['last_idx']} "
-                  f"(avg_dist={round(sum(ev['distances'])/len(ev['distances']),1)}, "
-                  f"overlap_hits={ev.get('overlap_hits',0)}, VOI={ev.get('roi_name', ROI_NAME)})")
+    if dur < MIN_EVENT_FRAMES:
+        return
+
+    # Only the fields that are declared in DictWriter.fieldnames
+    event_row = {
+        "class": cls,
+        "start_frame": ev["start_frame"],
+        "end_frame": ev["last_frame"],
+        "start_idx": ev["start_idx"],
+        "end_idx": ev["last_idx"],
+        "avg_dist": round(sum(ev["distances"]) / len(ev["distances"]), 1),
+        "min_dist": round(min(ev["distances"]), 1),
+        "overlap_hits": ev.get("overlap_hits", 0),
+        "VOI": ev.get("roi_name", ROI_NAME),
+    }
+    events.append(event_row)
+
+    # ---- debug-only extras (NOT stored in event_row) ----
+    start_self = ev.get("start_frame_dist")
+    end_self = ev.get("end_frame_dist")
+    start_near = ev.get("start_frame_nearest")
+    end_near = ev.get("end_frame_nearest")
+
+    if DEBUG:
+        def fmt(x): return "NA" if x is None else f"{x:.1f}"
+        print(
+            f"[DEBUG] Closed event: {cls} {ev['start_idx']}→{ev['last_idx']} "
+            f"(dur={dur}, "
+            f"avg_dist={event_row['avg_dist']}, "
+            f"min_dist={event_row['min_dist']}, "
+            f"start_self={fmt(start_self)}, end_self={fmt(end_self)}, "
+            f"start_nearest={fmt(start_near)}, end_nearest={fmt(end_near)}, "
+            f"overlap_hits={event_row['overlap_hits']}, VOI={event_row['VOI']})"
+        )
 
 def main():
     ensure_dirs()
@@ -209,10 +230,25 @@ def main():
         roi_box = (rx1, ry1, rx2, ry2)
         objs = data["objects"]
 
-        # --- split hands vs non-hands (ignore hands for VOI activity) ---
+        # split hands vs non-hands
         hands = [o for o in objs if o["cls_name"] in HAND_CLASSES]
         non_hands = [o for o in objs if o["cls_name"] not in HAND_CLASSES]
-        # 'hands' is unused for now, but available for later heuristics.
+
+        # per-frame nearest non-hand distance (for your intuition)
+        nearest_nonhand_dist = None
+        if non_hands:
+            nearest_nonhand_dist = min(
+                distance(bbox_center(o["box"]), roi_center) for o in non_hands
+            )
+
+        if DEBUG:
+            if nearest_nonhand_dist is not None:
+                print(
+                    f"[FRAME] {fname} (fid={fid}) nearest_nonhand_dist="
+                    f"{nearest_nonhand_dist:.1f} px (threshold={NEAR_THRESHOLD_PX})"
+                )
+            else:
+                print(f"[FRAME] {fname} (fid={fid}) no non-hand objects.")
 
         img = None
         if WRITE_ANNOTATIONS:
@@ -231,8 +267,16 @@ def main():
             overlaps = OVERLAP_IS_ACTIVITY and (ov_iou > MIN_IOU_FOR_OVERLAP)
             near = (d <= NEAR_THRESHOLD_PX) or overlaps
 
+            if DEBUG:
+                print(
+                    f"  [OBJ] {fname} fid={fid} cls={cls} "
+                    f"d={d:.1f}px, iou={ov_iou:.3f}, "
+                    f"near={near} (dist<=thr? {d <= NEAR_THRESHOLD_PX}, overlaps={overlaps})"
+                )
+
             if near:
                 if cls not in active:
+                    # start new event for this class
                     active[cls] = {
                         "start_frame": fname,
                         "start_idx": fid,
@@ -241,10 +285,19 @@ def main():
                         "distances": [d],
                         "overlap_hits": 1 if overlaps else 0,
                         "missing": 0,
-                        "roi_name": ROI_NAME
+                        "roi_name": ROI_NAME,
+                        # extra debug fields
+                        "start_frame_dist": d,
+                        "end_frame_dist": d,
+                        "start_frame_nearest": nearest_nonhand_dist,
+                        "end_frame_nearest": nearest_nonhand_dist,
                     }
                     if DEBUG:
-                        print(f"[DEBUG] Start event: {cls} @ {fid}")
+                        print(
+                            f"[DEBUG] Start event: {cls} @ {fid} "
+                            f"(d={d:.1f}, nearest_nonhand={fmt_dist(nearest_nonhand_dist)}, "
+                            f"overlaps={overlaps})"
+                        )
                 else:
                     ev = active[cls]
                     ev["last_frame"] = fname
@@ -253,6 +306,9 @@ def main():
                     if overlaps:
                         ev["overlap_hits"] += 1
                     ev["missing"] = 0
+                    # update per-event end distances
+                    ev["end_frame_dist"] = d
+                    ev["end_frame_nearest"] = nearest_nonhand_dist
             else:
                 if cls in active:
                     ev = active[cls]
@@ -267,7 +323,7 @@ def main():
                         active.pop(cls, None)
 
         # --------- handle objects not seen in this frame ----------
-        seen_classes = {o["cls_name"] for o in non_hands}  # only non-hands
+        seen_classes = {o["cls_name"] for o in non_hands}
         for cls, ev in list(active.items()):
             if cls not in seen_classes:
                 ev["missing"] += 1
@@ -288,7 +344,7 @@ def main():
     for cls, ev in list(active.items()):
         _close_event_for_cls(cls, ev, events)
 
-    # Write events CSV
+    # Write events CSV (extra debug keys are ignored)
     with OUT_CSV.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=[
             "class","start_frame","end_frame","start_idx","end_idx",
