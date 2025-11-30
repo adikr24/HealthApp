@@ -12,7 +12,7 @@ import csv, re, cv2, shutil
 from collections import Counter
 from pathlib import Path as _P
 
-# ======================= CONFIG =======================
+# ======================= CONFIG ======================= #
 
 # Input (read-only)
 FUSED_DIR = Path(

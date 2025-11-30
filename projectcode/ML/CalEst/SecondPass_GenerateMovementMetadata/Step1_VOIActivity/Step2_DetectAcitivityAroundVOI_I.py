@@ -10,20 +10,12 @@ from collections import defaultdict
 # ======================= CONFIG =======================
 
 # ---- INPUTS ----
-IN_LABELS = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/voi_bbox_and_hands_labels.csv"
-)
-IN_IMG_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIBoundingBoxes"
-)
+IN_LABELS = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata/voi_bbox_and_hands_labels.csv")
+IN_IMG_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIBoundingBoxes")
 
 # ---- OUTPUTS ----
-OUT_META_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata"
-)
-OUT_IMG_DIR = Path(
-    "/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIActivity"
-)
+OUT_META_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/Metadata")
+OUT_IMG_DIR = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIV/CookingAnalysis/SecondPass_GenerateMovementMetadata/bounding_boxes/VOIActivity")
 OUT_CSV = OUT_META_DIR / "voi_activity_summary.csv"
 
 # ---- PARAMETERS ----
