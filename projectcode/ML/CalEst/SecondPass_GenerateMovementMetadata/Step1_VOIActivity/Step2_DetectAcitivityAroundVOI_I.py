@@ -322,7 +322,7 @@ def main():
                 gap_since_last_seen = fid - ev["last_idx"]
                 if ev["missing"] > GAP_TOLERANCE or gap_since_last_seen > PER_OBJECT_MAX_INDEX_GAP:
                     if DEBUG:
-                        print(f"[DEBUG] Close {cls} (not seen): "
+                        print(f"[DEBUG] Close {cls} (not seen):"
                               f"{ev['last_idx']} → {fid} (gap {gap_since_last_seen})")
                     _close_event_for_cls(cls, ev, events)
                     active.pop(cls, None)
