@@ -43,12 +43,15 @@ from ultralytics import YOLO
 MODEL_WEIGHTS = "yolov8n.pt"   # tiny/fast; switch to yolov8s.pt for better accuracy
 
 def clip(val, lo, hi):
+    # Clamp a numeric value to the provided [lo, hi] range.
     return max(lo, min(hi, val))
 
 def compute_flow_roi(cup_xyxy, img_w, img_h):
     """
-    Flow ROI anchored so that its TOP aligns with the cup rim (cup box top).
-    The ROI extends downward by roi_h. Keep LEFT edge fixed and trim RIGHT edge inward.
+    Compute a flow ROI beneath a detected cup box.
+
+    The ROI is aligned to the cup rim, extends downward, and trims the
+    right side to avoid cup handles. This region is later used for pixel-flow analysis.
     """
     x1, y1, x2, y2 = cup_xyxy
     w = x2 - x1
@@ -86,7 +89,7 @@ def compute_flow_roi(cup_xyxy, img_w, img_h):
     return (rx1, y_top, rx2, y_bottom)
 
 def main():
-    # Load YOLO
+    # Main pipeline: detect cups, derive ROIs for downstream flow analysis, and write outputs.
     model = YOLO(MODEL_WEIGHTS)
     names = getattr(model, "names", None) or getattr(model.model, "names", {})
     cup_ids = [i for i, n in (names.items() if isinstance(names, dict) else enumerate(names)) if str(n).lower() == "cup"]

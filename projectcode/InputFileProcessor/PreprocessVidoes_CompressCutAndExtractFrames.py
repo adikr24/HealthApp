@@ -7,6 +7,8 @@ from typing import Optional, Tuple
 import cv2
 
 
+# Helper class for converting video files and extracting frame images.
+# Uses FFmpeg for video transcoding and OpenCV for frame extraction.
 class VideoPreprocessor:
     """
     Convert video → MP4 (optional trim/resize), optionally delete the original, then extract frames.
@@ -106,6 +108,7 @@ class VideoPreprocessor:
 
     # ----------------------- Conversion (FFmpeg) -----------------------
 
+    # High-level conversion step: build and run FFmpeg to generate the normalized MP4.
     def convert_to_mp4(
         self,
         *,
@@ -172,6 +175,7 @@ class VideoPreprocessor:
 
     # ---------------------- Frame Extraction (cv2) ----------------------
 
+    # High-level extraction step: read video frames and save every Nth frame as an image.
     def extract_frames(
         self,
         *,
@@ -237,6 +241,7 @@ class VideoPreprocessor:
 
     # ------------------------------ Utils ------------------------------
 
+    # Run a subprocess and raise a runtime error when the command fails.
     @staticmethod
     def _run(cmd, err_msg: str):
         try:
@@ -249,6 +254,7 @@ class VideoPreprocessor:
         if not Path(path).exists():
             raise FileNotFoundError(f"Path not found: {path}")
 
+    # Delete the original source file only after successful conversion and when it is a different file.
     @staticmethod
     def _safe_delete_original(original_path: str, converted_path: str):
         # Only delete if both paths exist and are different files

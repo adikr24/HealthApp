@@ -24,7 +24,7 @@ OUT_DIR_YOLO = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/Cooking
 # Inference parameters
 EVERY_NTH  = 1          # analyze every 2nd frame
 CONF_THRES = 0.5        # confidence threshold (≥ 50%)
-MAX_FRAMES = 2200       # cap total frames processed
+MAX_FRAMES = 2200       # cap total frames processed # this can be removed on for larger files
 
 # === NEW: CSV output path ===
 SUMMARY_CSV = OUT_DIR_YOLO / "custom_yolo_detections.csv"

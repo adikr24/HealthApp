@@ -1,219 +1,219 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.1.2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36" version="29.6.1">
   <diagram name="Page-1" id="d1g0rY3UdnsfsgO06JVO">
-    <mxGraphModel dx="1210" dy="1823" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3455" dy="2503" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="PferYt5f4467uAoA0y6F-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="PferYt5f4467uAoA0y6F-1" target="PferYt5f4467uAoA0y6F-2" edge="1">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF00;" value="" vertex="1">
+          <mxGeometry height="815" width="260" x="-10" y="-60" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-13" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-16" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="PferYt5f4467uAoA0y6F-1" value="Run Camera for 5-10 seconds" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="130" y="140" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Run Camera for 5-10 seconds" vertex="1">
+          <mxGeometry height="60" width="120" x="80" y="130" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="PferYt5f4467uAoA0y6F-2" target="gR9jBgyAwE0XR63Dfkpl-5">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-15" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="6KZdGi1nMt1uWR0XCUK3-23">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="PferYt5f4467uAoA0y6F-2" value="Generate 10 Frames&lt;div&gt;(GenerateFoodFrames&lt;/div&gt;&lt;div&gt;.py)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="300" y="140" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Generate 10 Frames&lt;div&gt;for predictions&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="300" y="130" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-1" value="HEY MACE !! I am eating" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="130" y="90" width="150" height="30" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-17" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="HEY &quot;MATE&quot; !! I am eating" vertex="1">
+          <mxGeometry height="30" width="150" x="80" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-2" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="80" y="140" width="30" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-18" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Actor" vertex="1">
+          <mxGeometry height="60" width="30" x="30" y="130" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-3" target="gR9jBgyAwE0XR63Dfkpl-5">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-19" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="6KZdGi1nMt1uWR0XCUK3-23">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="740" y="-20" />
-              <mxPoint x="510" y="-20" />
+              <mxPoint x="740" y="-30" />
+              <mxPoint x="510" y="-30" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-3" value="Run Image Classification (FoodClassifier.py)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="680" y="20" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Run Image Classification on food being eaten" vertex="1">
+          <mxGeometry height="60" width="120" x="680" y="10" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-5" target="gR9jBgyAwE0XR63Dfkpl-3">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-21" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-20" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-5" target="gR9jBgyAwE0XR63Dfkpl-15">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-22" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-26" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-5" value="Get Food Name and utensil (Assumption)&lt;div&gt;(GetFoodNameAndUtensil.py)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="430" y="10" width="160" height="80" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Get Food Name and utensil" vertex="1">
+          <mxGeometry height="80" width="160" x="430" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-14" value="Collapse 10 Predictions and Sizes into One" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="540" y="-50" width="150" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-15" target="gR9jBgyAwE0XR63Dfkpl-17">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-24" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-27" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-15" target="gR9jBgyAwE0XR63Dfkpl-32">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-25" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-30" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-15" value="FoodPrediction.py" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="450" y="200" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-26" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Get Food Prediction" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="190" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-17" value="Show Food Name on UI" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="780" y="200" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-77" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1680" y="220" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-19" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="930" y="190" width="30" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-27" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Show Food Name on UI with probability (Subject to change after video Analysis)" vertex="1">
+          <mxGeometry height="60" width="120" x="1430" y="190" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-20" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="30" y="600" width="30" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-28" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Actor" vertex="1">
+          <mxGeometry height="60" width="30" x="1690" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-21" value="HEY MACE!! I am cooking" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="80" y="560" width="150" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-22" target="gR9jBgyAwE0XR63Dfkpl-23">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-22" value="Run Camera for 2-3 minutes (more to come)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="90" y="610" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-23" target="gR9jBgyAwE0XR63Dfkpl-25">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-23" value="Upload to GoogleDrive" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="270" y="610" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-25" target="gR9jBgyAwE0XR63Dfkpl-42">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-25" value="Resize Video and generate Images for each frame (ProcessInputVideos.py)&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="450" y="595" width="140" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-28" target="gR9jBgyAwE0XR63Dfkpl-25">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-28" value="ProcessVidoesTo&lt;div&gt;ExtractFrames&lt;/div&gt;&lt;div&gt;ForAnnotations.py&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="490" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-29" target="gR9jBgyAwE0XR63Dfkpl-28">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-29" value="PreprocessVideo.py" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="280" y="490" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-32" target="gR9jBgyAwE0XR63Dfkpl-35">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-29" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-32" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="600" y="340" />
-              <mxPoint x="600" y="340" />
+              <mxPoint x="600" y="330" />
+              <mxPoint x="600" y="330" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-32" value="SaveFoodPrediction" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="450" y="310" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-30" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Save Food Prediction" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="300" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-35" target="gR9jBgyAwE0XR63Dfkpl-38">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-31" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-34" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="820" y="330" />
-              <mxPoint x="820" y="330" />
+              <mxPoint x="820" y="320" />
+              <mxPoint x="820" y="320" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-45" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-35" target="gR9jBgyAwE0XR63Dfkpl-44">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-32" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="&lt;div&gt;Get a list of all possible ingredients to be put in the food&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="650" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-33" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-32" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-35" value="&lt;div&gt;Get a list of all ingredients to be put in the food&lt;/div&gt;GetRecipe.py" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="650" y="310" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-34" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="" vertex="1">
+          <mxGeometry height="80" width="60" x="870" y="290" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-38" target="gR9jBgyAwE0XR63Dfkpl-35">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-35" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="RecipeDB" vertex="1">
+          <mxGeometry height="30" width="60" x="870" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-37" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Actor" vertex="1">
+          <mxGeometry height="60" width="30" x="37.5" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-38" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="HEY MACE!! I am cooking" vertex="1">
+          <mxGeometry height="30" width="150" x="87.5" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-39" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="277.5" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Record Cooking Video" vertex="1">
+          <mxGeometry height="60" width="120" x="97.5" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-41" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-43" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="397.5" y="670" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-42" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="6KZdGi1nMt1uWR0XCUK3-49">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-38" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="870" y="300" width="60" height="80" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-43" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Resize Video and generate Images for each frame&amp;nbsp;" vertex="1">
+          <mxGeometry height="90" width="140" x="457.5" y="625" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-40" value="RecipeDB" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="870" y="390" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-42" target="gR9jBgyAwE0XR63Dfkpl-46">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-44" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-43" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-52" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-42" target="gR9jBgyAwE0XR63Dfkpl-51">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-45" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Process Vidoes To&lt;div&gt;Extract Frames&lt;/div&gt;&lt;div&gt;For Annotations&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="467.5" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-46" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-45" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-42" value="&lt;div&gt;Identify Vessel Of Interest (GetVesselOf&lt;/div&gt;&lt;div&gt;Interest.py)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="650" y="610" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="PreprocessVideo Scripts" vertex="1">
+          <mxGeometry height="60" width="120" x="287.5" y="520" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-44" target="gR9jBgyAwE0XR63Dfkpl-53">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-48" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-53" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-44" value="Get Ingredients color gradients (GetColor&lt;div&gt;Gradients.py)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="650" y="490" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-49" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;Identify Vessel Of Interest (VOI) where pouring action takes place&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="657.5" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-46" value="Could be multiple so we&#39;ll figure (WIP)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="650" y="730" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-54" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-51" target="gR9jBgyAwE0XR63Dfkpl-53">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-50" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="6KZdGi1nMt1uWR0XCUK3-55">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-51" value="&lt;div&gt;Generate Bounding Boxes on VOI (GenerateBounding&lt;/div&gt;&lt;div&gt;BoxesVOI.py)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="830" y="610" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-51" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Get Ingredients color gradients and states" vertex="1">
+          <mxGeometry height="60" width="120" x="657.5" y="520" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-56" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-53" target="gR9jBgyAwE0XR63Dfkpl-55">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-52" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-70" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-53" value="GenerateHeatMaps&lt;div&gt;InBoundingBoxes.py&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="1020" y="610" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-53" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;Generate Bounding Boxes on VOI&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="837.5" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-59" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-55" target="gR9jBgyAwE0XR63Dfkpl-58">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-54" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-57" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-55" value="VesselInflow&lt;div&gt;Pipeline.py&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="1200" y="610" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-55" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Generate States to determine pour quantity and store ingredients labels" vertex="1">
+          <mxGeometry height="60" width="120" x="1162.5" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-58" target="gR9jBgyAwE0XR63Dfkpl-60">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-56" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="6KZdGi1nMt1uWR0XCUK3-59">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1430" y="690" />
-              <mxPoint x="1080" y="690" />
+              <mxPoint x="1402.5" y="740" />
+              <mxPoint x="1222.5" y="740" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-58" value="PixelFlow&lt;div&gt;Determination.py&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="1370" y="610" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-57" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Get Pixel Flow information" vertex="1">
+          <mxGeometry height="60" width="120" x="1342.5" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-63" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-60" target="gR9jBgyAwE0XR63Dfkpl-62">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-58" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-62" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-60" value="Mark ingredients identified and estimate their Q (IngredientsInsights.py)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1015" y="730" width="130" height="70" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-59" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Mark ingredients identified and estimate their quantity" vertex="1">
+          <mxGeometry height="70" width="130" x="1157.5" y="760" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-65" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-62" target="gR9jBgyAwE0XR63Dfkpl-64">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-75" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="6KZdGi1nMt1uWR0XCUK3-66">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-62" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Estimate their nutrients" vertex="1">
+          <mxGeometry height="60" width="120" x="1372.5" y="765" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-63" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-62" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-64" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="" vertex="1">
+          <mxGeometry height="80" width="60" x="1402.5" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-65" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="FoodDB" vertex="1">
+          <mxGeometry height="30" width="60" x="1402.5" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-78" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-28">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1390" y="750" />
-              <mxPoint x="1390" y="750" />
-            </Array>
+            <mxPoint x="1680" y="220" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-70" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-62" target="gR9jBgyAwE0XR63Dfkpl-69">
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-66" parent="1" style="whiteSpace=wrap;html=1;rounded=1;" value="Show Nutrients on UI" vertex="1">
+          <mxGeometry height="60" width="120" x="1430" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-68" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" value="Drop in Cloud" vertex="1">
+          <mxGeometry height="80" width="120" x="277.5" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-69" edge="1" parent="1" source="6KZdGi1nMt1uWR0XCUK3-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="6KZdGi1nMt1uWR0XCUK3-55" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-62" value="Estimate their nutrients (GetNutrients.py)" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="1230" y="735" width="120" height="60" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-70" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Identify Frames when Hand Interacts with VOI" vertex="1">
+          <mxGeometry height="60" width="120" x="1007.5" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-67" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="gR9jBgyAwE0XR63Dfkpl-64" target="gR9jBgyAwE0XR63Dfkpl-62">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-71" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="User Interaction" vertex="1">
+          <mxGeometry height="30" width="150" x="45" y="-20" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-64" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="1440" y="725" width="60" height="80" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-72" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF00;" value="" vertex="1">
+          <mxGeometry height="1050" width="1312.5" x="277.5" y="-60" as="geometry" />
         </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-68" value="FoodDB" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1440" y="810" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-69" value="Show Nutrients on UI" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="1230" y="950" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-71" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="1410" y="950" width="30" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gR9jBgyAwE0XR63Dfkpl-72" value="Generate Insights" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="60" y="10" width="60" height="30" as="geometry" />
+        <mxCell id="6KZdGi1nMt1uWR0XCUK3-81" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="Analytics" vertex="1">
+          <mxGeometry height="30" width="150" x="285" y="-40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
