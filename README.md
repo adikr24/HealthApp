@@ -58,6 +58,14 @@ Purpose: infer the cooking vessel and estimate the amount of the poured ingredie
   - **Step3_SetupVolumeBandsForObjects.py**
   - **Step4_GetSolidObjectPourQuantity.py**
 
+###### ML training utilities
+- **ObjectDetection (Training Custom YOLO)**
+  - **ML/ObjectDetection/TrainYolo/TrainYoloOnCustomObjects.py** → Train a custom YOLO model for object detection.
+  - The current custom detector is trained for 40 classes defined in the training config.
+- **ImageClassification (Training Custom ResNet)**
+  - **ML/ImageClassification/TransferLearningResnet** → Example/inference-style ResNet script for image classification.
+  - **ML/ImageClassification/InferenceFromResnet.py** → Run inference using a saved ResNet checkpoint.
+
 ### 4. Prototyping and Reference
 
 #### ActionDetection
@@ -76,14 +84,6 @@ This section contains earlier prototypes and experiment code for action and pour
 ##### ActionDetectionSampleCodeRef
 - This folder contains reference implementations and experiments with different models such as TSM, MMAction, and Epic-Kitchens-style pipelines.
 - It is useful as a technical reference for available action-recognition approaches.
-
-#### ObjectDetection (Training Custom YOLO)
-- **ML/ObjectDetection/TrainYolo/TrainYoloOnCustomObjects.py** → Train a custom YOLO model for object detection.
-- The current custom detector is trained for 40 classes defined in the training config.
-
-#### ImageClassification (Training Custom ResNet)
-- **ML/ImageClassification/TransferLearningResnet** → Example/inference-style ResNet script for image classification.
-- **ML/ImageClassification/InferenceFromResnet.py** → Run inference using a saved ResNet checkpoint.
 
 #### FetchAPIData
 - **getProductBarCode.py** → Extract barcode data from product images.
