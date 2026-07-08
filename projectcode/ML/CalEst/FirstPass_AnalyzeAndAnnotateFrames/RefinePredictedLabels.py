@@ -2,7 +2,7 @@
 from pathlib import Path
 import csv
 import cv2
-
+## This code essentially assigns left-right hands to the predicted hand labels to further compute hand-object distance
 # ---- PATHS -------------------------------------------------------------
 BASE = Path("/app/mediaFiles/output/videoOutputs/ProteinShakeIII/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo")
 CSV_PATH = BASE / "custom_yolo_detections.csv"

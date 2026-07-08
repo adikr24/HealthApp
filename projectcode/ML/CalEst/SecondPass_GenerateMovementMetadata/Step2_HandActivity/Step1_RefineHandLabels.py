@@ -1,17 +1,37 @@
 #!/usr/bin/env python3
-## Step 1 in Hand activity metadata generation
-# hand_label_collapse.py
-# - Merge overlapping hand boxes per frame (>=20% overlap).
-# - Output merged boxes + annotated images + per-frame summary.
+# ============================================================================
+# STEP 1: REFINE HAND LABELS - Merge overlapping hand detections per frame
+# ============================================================================
 #
-# Inputs:
-#   /app/mediaFiles/output/videoOutputs/ProteinShake/CookingAnalysis/FirstPass_ImageAnnotation/CustomYolo/detailed_hand_sides/all_detections_with_hand_side.csv
-#   Images assumed alongside that CSV (same folder), e.g. frame_*.jpg|png
+# PURPOSE: Deduplicate and merge overlapping hand detections to create clean,
+#          non-overlapping hand labels. Multiple detectors or frame processing
+#          may detect the same hand multiple times; this step consolidates them.
 #
-# Outputs:
-#   CSV:  .../SecondPass_GenerateMovementMetadata/Metadata/hand_label_collapse.csv
-#   CSV:  .../SecondPass_GenerateMovementMetadata/Metadata/hand_label_collapse_summary.csv
-#   IMGs: .../SecondPass_GenerateMovementMetadata/bounding_boxes/hand_label_collapse/<frames>
+# WORKFLOW:
+#   1. Load hand detections from first pass (all_detections_with_hand_side.csv)
+#   2. Group detections by frame
+#   3. For each frame, find overlapping hand boxes (IOU >= 20% or min-area overlap >= 20%)
+#   4. Merge overlapping hands into clusters using Union-Find
+#   5. For each cluster, create a single merged hand box (union of all overlaps)
+#   6. Label merged hands as left_hand, right_hand, merged_hands, or unknown_hand
+#   7. Output deduplicated CSV + per-frame summary + annotated images
+#
+# WHY THIS STEP:
+#   - YOLO may detect the same hand multiple times across overlapping detector runs
+#   - Multiple hands touching or close together appear as overlapping boxes
+#   - Clean, non-overlapping detections are essential for downstream ROI computation
+#   - Merging reduces noise and ensures consistent labeling
+#
+# INPUTS:
+#   - all_detections_with_hand_side.csv (from FirstPass, with hand left/right/unknown labels)
+#   - Frame images (frame_*.jpg/png) alongside CSV
+#
+# OUTPUTS:
+#   - hand_label_collapse.csv: deduplicated hand detections (labels: left_hand, right_hand, merged_hands, unknown_hand)
+#   - hand_label_collapse_summary.csv: per-frame statistics (# hands, # merged, etc.)
+#   - bounding_boxes/hand_label_collapse/: annotated frames showing original + merged boxes
+# ============================================================================
+
 
 from pathlib import Path
 import csv, cv2, re
@@ -54,8 +74,8 @@ TSCALE      = 0.5
 TTHICK      = 1
 
 # =============== HELPERS ===============
+# Utility functions for overlap detection, merging, and geometric computations.
 
-def norm(s): return (s or "").strip().lower()
 
 def get_cls(row):
     return norm(row.get("cls_name_norm") or row.get("cls_name") or row.get("cls_name_orig") or "")
@@ -98,7 +118,9 @@ def frame_idx(name):
     m = re.search(r"(\d+)", Path(name).stem)
     return int(m.group(1)) if m else -1
 
-# Union-Find for clustering overlapping hands
+# Union-Find (Disjoint Set Union) data structure for clustering overlapping hand detections.
+# When two hands overlap above the threshold, union them into the same cluster.
+# At the end, iterate through clusters and merge all hands in each cluster into one.
 class DSU:
     def __init__(self, n):
         self.p = list(range(n))

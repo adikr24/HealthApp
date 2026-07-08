@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Purpose: Hand-bottle FSM heuristic for generating frame-level and state-level
+object-of-interest metadata.
+This script inspects activity segments involving hand+bottle or hand+scoop,
+uses OCR on nearby frames to read bottle text, normalizes the detected labels,
+and writes/merges the inferred OOI and bottle_ocr values into CSV outputs.
+"""
 from __future__ import annotations
 from pathlib import Path
 import re

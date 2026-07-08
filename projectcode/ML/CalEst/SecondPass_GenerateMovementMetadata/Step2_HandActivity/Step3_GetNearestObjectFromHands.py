@@ -1,10 +1,39 @@
 #!/usr/bin/env python3
-# draw_nearest_object_per_hand_clean.py
+# ============================================================================
+# STEP 3: GET NEAREST OBJECT FROM HANDS - Link hands to closest detected objects
+# ============================================================================
+#
+# PURPOSE: For each hand ROI, identify the nearest object and track the interaction.
+#          This reveals what each hand is touching/holding (blender, ingredient, cup, etc.).
+#
+# WORKFLOW:
+#   1. Load hand ROI data from Step 2 (hand_rois.csv with ROI coordinates)
+#   2. Extract all hand ROIs and object bounding boxes from the same CSV
+#   3. Filter out hand detections (only track non-hand objects)
+#   4. For each frame:
+#      a. Collect all hand ROIs and object boxes
+#      b. For each hand, compute distance to every object
+#      c. Pick the nearest object (minimum distance)
+#      d. Draw hand ROI, objects, and a line from hand to nearest object
+#      e. Annotate with distance value
+#   5. Output CSV linking hands to nearest objects + annotated visualization frames
+#
+# WHY THIS STEP:
+#   - Understand hand-object interactions: is hand near blender? near ingredient? near cup?
+#   - Measure proximity: distance in pixels converted to frame-relative fraction
+#   - Generate visual evidence: see exactly which object each hand is closest to
+#   - Enables downstream analysis: temporal sequences of hand-object proximity
+#
+# INPUTS:
+#   - hand_rois.csv: hands (with hand_roi_* columns) + non-hand objects (with regular bbox)
+#   - HandROIs/: annotated frames from Step 2 (for visual reference)
+#
+# OUTPUTS:
+#   - hand_roi_closest_object.csv: per hand, nearest object name + distance (px and frame fraction)
+#   - HandNearestObjects/: annotated frames showing hands, objects, distance lines, and distance labels
+#   - hand_roi_no_object_detection_summary.csv: frames with no non-hand detections (debugging)
+# ============================================================================
 
-import csv
-import math
-from pathlib import Path
-import cv2
 
 
 # ======= PATHS ===============================================================
@@ -52,7 +81,9 @@ def rows_for_frame(rows, frame_name):
     return [r for r in rows if (r.get("frame") or "").strip() == frame_name]
 
 def collect_hands(rows):
-    hands = []
+    # Extract all hand ROIs from the CSV and compute their centroids.
+    # Each hand is represented by its ROI box and centroid (palm center).
+
     for r in rows:
         label = (r.get("label") or "")
         if "hand" not in label.lower():
@@ -74,7 +105,9 @@ def collect_hands(rows):
     return hands
 
 def collect_objects(rows):
-    objs = []
+    # Extract all non-hand objects (detected items like blender, ingredients, etc.) from the CSV.
+    # Each object is represented by its bounding box, centroid, class name, and confidence.
+
     for r in rows:
         name = (r.get("cls_name_norm") or r.get("cls_name_orig") or "").strip().lower()
         if not name:
@@ -98,6 +131,9 @@ def collect_objects(rows):
     return objs
 
 def pick_nearest_per_hand(hands, objects, diag_len):
+    # For each hand, compute Euclidean distance to all objects.
+    # Return the single nearest object per hand, breaking ties by confidence if available.
+
     results = []
     for h in hands:
         (hcx, hcy) = h["centroid"]

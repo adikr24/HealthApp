@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+Purpose: OCR helper for the hand-bottle FSM heuristic.
+This module reads video frames from a specified range, preprocesses them,
+and runs EasyOCR to extract text that can later be used to infer the bottle's
+contents or object of interest.
+"""
 from __future__ import annotations
 from pathlib import Path
 from typing import List, Dict, Optional, Iterable, Union

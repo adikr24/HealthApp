@@ -1,6 +1,21 @@
 #!/usr/bin/env python3
 # add_hand_rois_inside_v3.py
-# v3 = v2 + merge in NON-HAND detections so the output CSV is a single source of truth.
+#
+# PURPOSE: For each detected hand, compute a small ROI (Region of Interest) positioned
+#          at the palm area where interaction occurs. Merge with non-hand object detections
+#          to create a unified detection CSV.
+#
+# WORKFLOW:
+#   1. Load merged hand labels (from Step 1: hand_label_collapse)
+#   2. Classify each hand as left_hand, right_hand, merged_hands, or unknown_hand
+#   3. Compute a small ROI inside each hand box (position varies by hand type)
+#   4. Merge in non-hand objects (blender, ingredients, etc.) from supplemental detections
+#   5. Output unified CSV with ROI metadata + annotated images showing ROI overlays
+#
+# OUTPUTS:
+#   - hand_rois.csv: merged labels with hand_roi_* columns (x1, y1, x2, y2, cx, cy, w, h)
+#   - hand_roi_errors.csv: hands that failed ROI computation (for debugging)
+#   - HandROIs/: annotated frames with hand boxes + ROI boxes drawn
 
 from pathlib import Path
 import csv, cv2, re, math
@@ -138,7 +153,21 @@ def row_to_hand_label_and_box(row):
 
 def hand_roi_inside(label: str, box):
     """
-    Returns (rx1, ry1, rx2, ry2) ints or None if invalid/tiny.
+    Compute a small interaction ROI inside the hand box based on hand type.
+    
+    The ROI represents the palm area where the hand touches/interacts with objects.
+    Positioning logic:
+      - left_hand: top-right corner (where left palm reaches)
+      - right_hand: top-left corner (where right palm reaches)
+      - merged_hands: top-center band (conservative placement for two hands)
+      - unknown_hand: top-center (fallback)
+    
+    Args:
+        label: hand type (left_hand, right_hand, merged_hands, unknown_hand)
+        box: (x1, y1, x2, y2) of the full hand detection box
+    
+    Returns:
+        (rx1, ry1, rx2, ry2) in pixels, or None if box is too small for an ROI.
     """
     x1,y1,x2,y2 = map(float, box)
     w = max(0.0, x2 - x1)
@@ -198,6 +227,10 @@ def dedupe_key(r):
 # ======================= MAIN =======================
 
 def main():
+    # ============ STEP 1: Load primary hand labels ============
+    # Hand labels come from Step 1 (hand_label_collapse.csv) which merged overlapping hands
+    # per frame. Each hand is classified as left_hand, right_hand, merged_hands, or unknown_hand.
+    
     # ---- Pick primary hands file
     primary_csv = pick_first_existing(PRIMARY_LABELS)
     if primary_csv is None:
@@ -210,6 +243,10 @@ def main():
         fields = list(rdr.fieldnames or [])
 
     # ---- Optionally load supplemental objects
+    # ============ STEP 2: Load supplemental non-hand objects ============
+    # Blend in non-hand detections (blender, ingredients, cups, etc.) from supplemental source.
+    # This ensures the output CSV contains both hands AND relevant objects in one unified file.
+    
     supp_csv = pick_first_existing(SUPP_OBJECTS)
     supp_rows = []
     if supp_csv and supp_csv != primary_csv:
@@ -226,6 +263,10 @@ def main():
         print(f"[DEBUG] Loaded supplemental objects: {len(supp_rows)} rows from {supp_csv.name}")
 
     # ---- Output header: original + hand_roi_* (even for non-hand rows)
+    # ============ STEP 3: Prepare output columns ============
+    # Define the unified CSV schema: original columns + new hand_roi_* columns.
+    # Non-hand rows will have blank ROI columns; hand rows will be populated.
+    
     extra_cols = ["hand_roi_x1","hand_roi_y1","hand_roi_x2","hand_roi_y2",
                   "hand_roi_cx","hand_roi_cy","hand_roi_w","hand_roi_h"]
     out_fields = list(fields)
@@ -282,6 +323,9 @@ def main():
     hands_with_roi = 0
 
     for fname in sorted(by_frame, key=frame_idx):
+        # ============ STEP 4: Process each frame ============
+        # For each frame, compute hand ROIs, draw annotations, and build output rows.
+        
         img_path = src_img_dir / fname
         img = cv2.imread(str(img_path)) if img_path.exists() else None
 
@@ -355,6 +399,11 @@ def main():
             cv2.imwrite(str(OUT_IMG_DIR / fname), img)
 
     # ---- Write unified CSV (hands + non-hands)
+    # ============ STEP 5: Write outputs ============
+    # Save the unified CSV with all detections (hands with ROI data + non-hands).
+    # Also save error audit CSV for hands that failed ROI computation.
+    # Annotated frames are saved during frame processing above.
+    
     with OUT_CSV.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=out_fields)
         w.writeheader()
